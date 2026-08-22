@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pernikahan Adat Jawa — Arga &amp; Larasati</title>
+<meta name="description" content="Undangan pernikahan adat Jawa. Sabtu, 5 Desember 2026 — Pendopo Agung Keraton Ngayogyakarta.">
+<meta property="og:title" content="Pernikahan Arga &amp; Larasati">
+<meta property="og:description" content="Sabtu, 5 Desember 2026 — Yogyakarta">
+<meta name="theme-color" content="#1c130d">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@300;400;600&family=Ruthie&display=swap" rel="stylesheet">
+<style>
+/* tokens default — dioverride ThemeEngine saat runtime */
+:root{
+  --bg:#1c130d; --surface:#241811; --surface2:#2e2114; --fg:#f3e9d7;
+  --muted:#b7a68e; --gold:#c9a227; --border:rgba(201,162,39,.25);
+  --font-heading:'Cormorant Garamond',serif; --font-display:'Ruthie',cursive; --font-body:'Manrope',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);overflow-x:hidden;
+  -webkit-font-smoothing:antialiased}
+#world{min-height:100dvh}
+
+/* ---- OPENING SCENE (prototype scene Phase 1) ---- */
+#opening{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:24px;text-align:center;
+  background:radial-gradient(1100px 640px at 50% 22%, #33241a 0%, var(--bg) 65%)}
+#opening::before,#opening::after{content:"";position:absolute;left:0;width:100%;height:50.5%;
+  background:linear-gradient(180deg,var(--surface),var(--surface2));
+  transition:transform 1.3s cubic-bezier(.77,0,.18,1);z-index:-1}
+#opening::before{top:0;border-bottom:1px solid var(--border)}
+#opening::after{bottom:0;border-top:1px solid var(--border)}
+body.opened #opening{pointer-events:none}
+body.opened #opening::before{transform:translateY(-101%)}
+body.opened #opening::after{transform:translateY(101%)}
+
+.kicker{font-size:10px;letter-spacing:.42em;text-transform:uppercase;color:var(--muted)}
+.env-scene{perspective:1200px;width:min(300px,78vw);height:200px;margin:30px auto 0;cursor:pointer}
+.env{position:relative;width:100%;height:100%;transform-style:preserve-3d;animation:envFloat 5s ease-in-out infinite}
+@keyframes envFloat{0%,100%{transform:rotateX(10deg) translateY(0)}50%{transform:rotateX(6deg) translateY(-8px)}}
+.env.opening{animation:none;transform:rotateX(26deg) translateZ(30px);transition:transform .9s ease}
+.env-body{position:absolute;inset:0;background:linear-gradient(155deg,var(--surface2),var(--surface));
+  border:1px solid var(--border);box-shadow:0 24px 60px -18px rgba(0,0,0,.8)}
+.env-flap{position:absolute;left:0;top:0;width:100%;height:58%;transform-origin:top center;
+  background:linear-gradient(180deg,#45301c,var(--surface2));clip-path:polygon(0 0,100% 0,50% 100%);
+  transition:transform 900ms cubic-bezier(.2,.8,.2,1) .15s;z-index:3;backface-visibility:hidden;
+  border-bottom:1px solid var(--border)}
+.env.opening .env-flap{transform:rotateX(-180deg);z-index:1}
+.env-seal{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);width:44px;height:44px;
+  border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0bd4a,#8a6d1c);
+  display:flex;align-items:center;justify-content:center;z-index:4;
+  box-shadow:0 6px 18px rgba(0,0,0,.5),inset 0 2px 6px rgba(255,255,255,.25);
+  transition:transform .55s ease,opacity .45s ease}
+.env.opening .env-seal{transform:translate(-50%,-50%) scale(1.6);opacity:0}
+.env-card{position:absolute;left:6%;right:6%;top:10%;bottom:10%;z-index:2;
+  background:linear-gradient(160deg,#f3e9d7,#e8d9bd);color:#3a2a1a;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  box-shadow:0 14px 40px -10px rgba(0,0,0,.5);
+  transform:translateY(0);transition:transform 1s cubic-bezier(.22,1,.36,1) .5s}
+.env.opening .env-card{transform:translateY(-48%) translateZ(80px) scale(1.05)}
+.ec-names{font-family:var(--font-display);font-size:32px;color:#7a5c22;line-height:1.15}
+.ec-date{font-family:var(--font-heading);font-style:italic;font-size:12px;letter-spacing:.14em}
+.btn-open{margin-top:9px;padding:9px 22px;border:1px solid #7a5c22;background:transparent;color:#5d451a;
+  font-family:var(--font-body);font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;cursor:pointer;
+  transition:background .3s,color .3s}
+.btn-open:hover{background:#7a5c22;color:#f3e9d7}
+.env-hint{margin-top:18px;font-size:10px;letter-spacing:.34em;text-transform:uppercase;
+  color:var(--muted);opacity:0;animation:hintPulse 2.4s ease-in-out infinite}
+@keyframes hintPulse{0%,100%{opacity:.35}50%{opacity:.85}}
+
+/* guest name di sampul */
+.guest-line{margin-top:20px;font-size:11px;letter-spacing:.08em;color:var(--muted)}
+.guest-name{display:block;margin-top:3px;font-weight:600;color:var(--fg);letter-spacing:.06em}
+
+/* ---- SHELL konten (scene berikutnya menyusul Phase 4) ---- */
+main{position:relative}
+section[data-scene]{max-width:660px;margin:0 auto;padding:96px 24px;text-align:center}
+.h2{font-family:var(--font-heading);font-weight:500;font-size:clamp(26px,7vw,34px)}
+.scene-active .rv3d{opacity:1;transform:none}
+.rv3d{opacity:0;transform:translateY(36px) translateZ(-90px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
+
+/* reduced motion */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<div id="world">
+
+  <!-- SCENE 01: OPENING (envelope 3D) -->
+  <div id="opening" data-scene role="dialog" aria-label="Sampul undangan">
+    <p class="kicker">Undangan Pernikahan Adat Jawa</p>
+
+    <div class="env-scene" id="envScene" role="button" tabindex="0" aria-label="Ketuk amplop untuk membuka undangan">
+      <div class="env" id="env">
+        <div class="env-body"></div>
+        <div class="env-card">
+          <p class="ec-names" id="ecNames">—</p>
+          <p class="ec-date" id="ecDate">—</p>
+          <button class="btn-open" id="btnOpen">Buka Undangan</button>
+        </div>
+        <div class="env-flap"></div>
+        <div class="env-seal" aria-hidden="true"></div>
+      </div>
+    </div>
+    <p class="env-hint">Ketuk amplop untuk membuka</p>
+
+    <p class="guest-line">Kepada Yth. Bapak/Ibu/Saudara/i
+      <span class="guest-name" id="guestName">Tamu Undangan</span>
+    </p>
+  </div>
+
+  <!-- SHELL scene berikutnya (Phase 4) -->
+  <main>
+    <section data-scene aria-label="Hero">
+      <h2 class="h2 rv3d" id="heroNames">—</h2>
+      <p class="rv3d" id="heroDate" style="margin-top:10px;color:var(--muted);font-size:13px">—</p>
+    </section>
+    <section data-scene aria-label="Cerita">
+      <h2 class="h2 rv3d">Perjalanan Kami</h2>
+      <div id="storyTl" style="margin-top:28px;display:grid;gap:26px;text-align:left"></div>
+    </section>
+    <section data-scene aria-label="Galeri">
+      <h2 class="h2 rv3d">Galeri</h2>
+      <div class="swiper-wrapper" id="galWrapper" style="margin-top:26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px"></div>
+    </section>
+  </main>
+
+</div>
+
+<!-- ENGINE modules (urutan penting) -->
+<script src="engine/theme.js"></script>
+<script src="engine/performance.js"></script>
+<script src="engine/parallax.js"></script>
+<script src="engine/camera.js"></script>
+<script src="engine/animation.js"></script>
+<script src="engine/scene.js"></script>
+<script src="engine/interaction.js"></script>
+<script src="engine/renderer.js"></script>
+<script src="scenes/opening.js"></script>
+<script src="engine/init.js"></script>
+</body>
+</html>

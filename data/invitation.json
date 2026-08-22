@@ -1,0 +1,69 @@
+{
+  "slug": "arga-larasati",
+  "theme": "jawa-luxury",
+  "guestParam": "to",
+  "couple": {
+    "groom": {
+      "short": "Arga",
+      "full": "Raden Arga Wijaya",
+      "childOf": "Bpk. Hendra Wijaya & Ibu Sri Wahyuni"
+    },
+    "bride": {
+      "short": "Larasati",
+      "full": "Rara Larasati Ningrum",
+      "childOf": "Bpk. Bambang Prasetya & Ibu Dewi Lestari"
+    }
+  },
+  "event": {
+    "dateISO": "2026-12-05T10:00:00+07:00",
+    "dateLabel": "Sabtu · 5 Desember 2026",
+    "venue": "Pendopo Agung Keraton Ngayogyakarta",
+    "address": "Jl. Rotowijayan Blok No. 1, Yogyakarta",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Pendopo+Agung+Keraton+Yogyakarta"
+  },
+  "story": [
+    {
+      "year": "2019",
+      "title": "Pertemuan Pertama",
+      "text": "Berkenalan di acara Sekaten, mengobrol panjang sambil menonton wayang kulit di Alun-alun Utara."
+    },
+    {
+      "year": "2021",
+      "title": "Mulai Dekat",
+      "text": "Menyatakan perasaan di bawah bulan purnama, di pantai Parangtritis."
+    },
+    {
+      "year": "2024",
+      "title": "Lamaran",
+      "text": "Keluarga laki-laki datang melamar dengan penuh adat istiadat, di rumah sang putri."
+    },
+    {
+      "year": "2026",
+      "title": "Pernikahan",
+      "text": "Dua hati disatukan dalam satu ikatan — sampai tua nanti."
+    }
+  ],
+  "gallery": [
+    {
+      "src": "img/gal-siraman.svg",
+      "caption": "Siraman"
+    },
+    {
+      "src": "img/gal-midodareni.svg",
+      "caption": "Midodareni"
+    },
+    {
+      "src": "img/gal-paes.svg",
+      "caption": "Paes Ageng"
+    },
+    {
+      "src": "img/gal-panggih.svg",
+      "caption": "Panggih"
+    }
+  ],
+  "gift": {
+    "bank": "BCA",
+    "account": "1234567890",
+    "holder": "RARA LARASATI NINGRUM"
+  }
+}

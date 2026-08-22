@@ -1,0 +1,23 @@
+{
+  "name": "jawa-luxury",
+  "colors": {
+    "background": "#1c130d",
+    "surface": "#241811",
+    "surface2": "#2e2114",
+    "foreground": "#f3e9d7",
+    "muted": "#b7a68e",
+    "accent": "#c9a227",
+    "border": "rgba(201,162,39,.25)"
+  },
+  "motion": {
+    "intensity": 1,
+    "parallax": 0.8,
+    "dustCountHigh": 14,
+    "dustCountLow": 5
+  },
+  "typography": {
+    "heading": "'Cormorant Garamond', serif",
+    "display": "'Ruthie', cursive",
+    "body": "'Manrope', sans-serif"
+  }
+}
