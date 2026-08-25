@@ -56,7 +56,7 @@ global.IntersectionObserver = class { observe(){} unobserve(){} disconnect(){} }
 
 // load engine files in order
 const fs = require('fs');
-for (const f of ['../scenes/opening','theme','performance','parallax','motion','ambient','camera','animation','scene','interaction','renderer','commerce','gallery','init']) {
+for (const f of ['../scenes/opening','theme','performance','parallax','motion','ambient','flyers','camera','animation','scene','interaction','renderer','commerce','gallery','init']) {
   require('vm').runInThisContext(fs.readFileSync('engine/'+f+'.js','utf8'),{filename:f+'.js'});
 }
 (async () => {
@@ -128,6 +128,20 @@ for (const f of ['../scenes/opening','theme','performance','parallax','motion','
   assert.ok(newMsg.includes('<img src=x'), 'markup disimpan/ditampilkan apa adanya (teks)');
   assert.ok(newMsg.includes('Doa terbaik'));
   assert.ok(!byId.rsvpList.children[0].children.some(n => n.tagName === 'IMG'), 'tidak ada elemen IMG dibuat dari input');
+
+  // Cinematic layer: flyers spawn, video latar, gapura parallax.
+  assert.strictEqual(typeof FlyersEngine.init, 'function', 'FlyersEngine harus terdefinisi');
+  const flyerLayer = document.body.children.find(n => n.id === 'flyersLayer');
+  assert.ok(flyerLayer, 'flyersLayer harus ditempel ke body');
+  const flyers = flyerLayer.children;
+  assert.strictEqual(flyers.length, 5, '3 kupu-kupu + 2 burung harus terspawn');
+  assert.strictEqual(flyers.filter(f => f.className.includes('butterfly')).length, 3, '3 kupu-kupu');
+  assert.strictEqual(flyers.filter(f => f.className.includes('bird')).length, 2, '2 burung');
+  assert.ok(flyers.every(f => String(f.style.animationDelay).startsWith('-')), 'delay negatif (fase acak)');
+  for (const needle of ['assets/video/hero-loop.mp4', 'assets/video/petals-loop.mp4', 'autoplay muted loop playsinline', 'deco-gapura', 'data-speed="0.1"']) {
+    assert.ok(html.includes(needle), `index.html harus memuat "${needle}"`);
+  }
+  assert.strictEqual(html.split('preload="metadata"').length - 1, 2, 'total video background tepat 2');
 
   console.log('SMOKE TEST PASS — App.start selesai tanpa error'); process.exit(0);
 })().catch(e => { console.error('SMOKE TEST FAIL:', e.message); process.exit(1); });

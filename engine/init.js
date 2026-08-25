@@ -23,6 +23,7 @@ const App = {
     Interaction.init(theme.motion.intensity);
     MotionEngine.init();
     AmbientEngine.init();
+    FlyersEngine.init();
     GalleryFlow.init();
     setupOpening(data, theme);
   }

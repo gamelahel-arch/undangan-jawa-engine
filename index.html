@@ -79,7 +79,7 @@ main>section[data-scene]:nth-of-type(even):not(.story-section):not(.location-sec
 .section-kicker{margin-bottom:12px}.h1,.h2,.h3{font-family:var(--font-heading);font-weight:600}.h1{font-family:var(--font-display);font-weight:400;font-size:clamp(64px,20vw,96px);line-height:.92}.h2{font-size:clamp(31px,8vw,42px);line-height:1.03}.h3{font-size:24px;line-height:1.1}.section-copy{margin:14px auto 0;max-width:34ch;color:var(--muted);font-size:13px;line-height:1.8}.gold-rule{display:block;width:54px;height:1px;margin:22px auto;background:var(--gold)}
 
 /* Hero: foto sinematik full-screen sebagai scene; teks langsung di atas foto. */
-section.scene-hero{display:flex;min-height:100dvh;padding-top:110px!important;background:linear-gradient(180deg,rgba(20,12,7,.55) 0%,rgba(20,12,7,.85) 100%),var(--hero-photo,radial-gradient(ellipse at 50% 50%,rgba(124,91,34,.2),transparent 63%)) center/cover no-repeat}
+section.scene-hero{display:flex;min-height:100dvh;padding-top:110px!important;background:var(--hero-photo,radial-gradient(ellipse at 50% 50%,rgba(124,91,34,.2),transparent 63%)) center/cover no-repeat}
 .hero-frame{position:relative;width:min(100%,420px)}
 .scene-hero .kicker,.scene-hero .h1,.scene-hero .hero-date,.scene-hero .hero-scroll{text-shadow:0 2px 22px rgba(10,6,3,.8)}
 .hero-date{margin-top:16px;color:#e8dcc6;font-size:11px;letter-spacing:.3em;text-transform:uppercase}.hero-scroll{display:inline-flex;align-items:center;gap:9px;margin-top:28px;color:var(--gold);font-size:9px;letter-spacing:.25em;text-transform:uppercase}.hero-scroll::after{content:"";width:28px;height:1px;background:currentColor}
@@ -127,6 +127,7 @@ html[data-quality="low"] .m3{display:none}
 .hang:nth-child(4n){--sd:3.8s}.hang:nth-child(5n){height:52px;--sd:4.4s;animation-delay:-1.6s}
 @keyframes sway{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
 /* Dekorasi parallax besar per section */
+.deco-gapura{position:absolute;top:-72px;left:0;right:0;margin:0 auto;width:min(500px,120vw);aspect-ratio:240/180;color:var(--gold-pale);opacity:.05;pointer-events:none}
 .deco-glow{position:absolute;top:5%;left:0;right:0;margin:0 auto;width:min(540px,120vw);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(124,91,34,.17),transparent 62%);pointer-events:none}
 .gallery-section .deco-glow{top:auto;bottom:8%;width:min(430px,100vw);background:radial-gradient(circle,rgba(124,91,34,.13),transparent 60%)}
 .deco-ring{position:absolute;top:16%;left:0;right:0;margin:0 auto;width:min(430px,102vw);aspect-ratio:1;border-radius:50%;border:1px dashed rgba(201,168,76,.15);pointer-events:none}
@@ -150,6 +151,31 @@ section[data-scene]::before{content:"";position:absolute;left:50%;bottom:-4px;z-
 @keyframes cardFloat{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-4px,0)}}
 .motion-ready .hero-frame.in,.motion-ready .tl-item.in,.motion-ready .couple-card.in,.motion-ready .gift-card.in{animation:cardFloat var(--fdur,7s) ease-in-out infinite;animation-delay:calc(1s + var(--i,0)*95ms)}
 .tl-item:nth-child(2n),.couple-grid .couple-card:nth-child(2){--fdur:8.2s}
+/* ====== CINEMATIC: video latar loop + kupu-kupu/burung melintas ====== */
+.scene-hero,.closing{isolation:isolate} /* z-index:-1 tetap di dalam section, di atas background fallback */
+.bg-video{position:absolute;inset:0;z-index:-1;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.scene-hero .bg-video{opacity:.85}
+.closing .bg-video{opacity:.5}
+.video-overlay{position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(20,12,7,.55),rgba(20,12,7,.85))}
+.closing .video-overlay{background:linear-gradient(180deg,rgba(28,19,13,.66),rgba(28,19,13,.86))}
+#flyersLayer{position:fixed;inset:0;z-index:95;pointer-events:none;overflow:hidden}
+.flyer{position:absolute;left:0;width:32px;height:26px;color:#d4b978;opacity:.55;will-change:transform;animation:flyCross var(--fdur,24s) linear infinite}
+.flyer svg{display:block;width:100%;height:100%;overflow:visible}
+.flyer path,.flyer ellipse{fill:currentColor}
+.butterfly{color:rgba(212,185,120,.62)}
+.butterfly .fw{animation:flapX .85s ease-in-out infinite alternate}
+.wl,.wr{transform-origin:16px 12px}
+@keyframes flapX{from{transform:scaleX(1)}to{transform:scaleX(.28)}}
+.bird{width:36px;height:16px;color:rgba(150,116,54,.5)}
+.bw{transform-origin:16px 12px;animation:flapY .5s ease-in-out infinite alternate}
+@keyframes flapY{from{transform:scaleY(1)}to{transform:scaleY(.45)}}
+@keyframes flyCross{
+  0%{transform:translate3d(-12vw,0,0) rotate(-8deg)}
+  25%{transform:translate3d(21vw,-8vh,0) rotate(7deg)}
+  50%{transform:translate3d(51vw,3vh,0) rotate(-6deg)}
+  75%{transform:translate3d(81vw,-6vh,0) rotate(7deg)}
+  100%{transform:translate3d(112vw,-2vh,0) rotate(-8deg)}
+}
 /* ====== COMMERCE: musik, countdown, salin rekening, RSVP ====== */
 .music-btn{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:120;width:46px;height:46px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--border);background:linear-gradient(155deg,rgba(46,33,20,.92),rgba(28,19,13,.88));color:var(--gold-pale);box-shadow:0 14px 30px -12px rgba(0,0,0,.75);cursor:pointer;-webkit-tap-highlight-color:transparent}
 .music-btn:focus-visible{outline:1px solid var(--gold-pale);outline-offset:3px}
@@ -181,7 +207,7 @@ section[data-scene]::before{content:"";position:absolute;left:50%;bottom:-4px;z-
 .rsvp-empty{color:var(--muted);font-style:italic;font-size:12px;padding:6px}
 
 @media (min-width:680px){section[data-scene]{min-height:auto;padding:140px 36px}.couple-grid{grid-template-columns:1fr 1fr}.gallery-flow{padding-left:calc(50vw - 145px);padding-right:calc(50vw - 145px)}.gallery-card{flex-basis:290px}.cd-grid{gap:14px}}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.motion-ready [data-motion]{opacity:1!important;transform:none!important;transition-delay:0ms!important}#ambientLayer,.hang-row,.ampel{display:none}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.motion-ready [data-motion]{opacity:1!important;transform:none!important;transition-delay:0ms!important}#ambientLayer,#flyersLayer,.hang-row,.ampel{display:none}.bg-video{display:none} /* fallback: poster/foto statis di background section */}
 </style>
 </head>
 <body class="opening-locked">
@@ -216,6 +242,8 @@ section[data-scene]::before{content:"";position:absolute;left:50%;bottom:-4px;z-
 
   <main id="invitationContent" tabindex="-1">
     <section class="scene-hero" data-scene aria-label="Pembuka undangan">
+      <video class="bg-video" autoplay muted loop playsinline preload="metadata" poster="assets/img/hero.jpg" aria-hidden="true" tabindex="-1"><source src="assets/video/hero-loop.mp4" type="video/mp4"></video>
+      <span class="video-overlay" aria-hidden="true"></span>
       <div class="hang-row" aria-hidden="true"><span class="hang"></span><span class="hang"></span><span class="hang"></span><span class="hang"></span><span class="hang"></span></div>
       <span class="deco-glow" data-motion="parallax" data-speed="0.06" aria-hidden="true"></span>
       <div class="batik-field" aria-hidden="true"></div>
@@ -243,6 +271,7 @@ section[data-scene]::before{content:"";position:absolute;left:50%;bottom:-4px;z-
     </section>
 
     <section class="story-section" data-scene aria-label="Cerita perjalanan">
+      <svg class="deco-gapura" data-motion="parallax" data-speed="0.1" viewBox="0 0 240 180" aria-hidden="true"><g fill="currentColor"><path d="M112 180 L112 158 L103 158 L103 134 L109 134 L109 108 L99 108 L99 84 L107 84 L107 58 L93 58 L93 40 L111 40 L111 22 L117 22 L117 180 Z"/><path d="M128 180 L128 158 L137 158 L137 134 L131 134 L131 108 L141 108 L141 84 L133 84 L133 58 L147 58 L147 40 L129 40 L129 22 L123 22 L123 180 Z"/></g></svg>
       <svg class="deco-gunungan" data-motion="parallax" data-speed="0.08" viewBox="0 0 120 200" aria-hidden="true"><path d="M60 4 L70 30 L62 40 L82 74 L70 86 L94 130 L80 140 L90 178 L30 178 L40 140 L26 130 L50 86 L38 74 L58 40 L50 30 Z" fill="currentColor"/></svg>
       <p class="kicker section-kicker" data-motion="reveal">Sepenggal Kisah</p>
       <h2 class="h2" data-motion="reveal">Perjalanan Kami</h2>
@@ -295,6 +324,8 @@ section[data-scene]::before{content:"";position:absolute;left:50%;bottom:-4px;z-
     </section>
 
     <section class="closing" data-scene aria-label="Amplop digital">
+      <video class="bg-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1"><source src="assets/video/petals-loop.mp4" type="video/mp4"></video>
+      <span class="video-overlay" aria-hidden="true"></span>
       <svg class="deco-gunungan left" data-motion="parallax" data-speed="0.14" viewBox="0 0 120 200" aria-hidden="true"><g transform="translate(120,0) scale(-1,1)"><path d="M60 4 L70 30 L62 40 L82 74 L70 86 L94 130 L80 140 L90 178 L30 178 L40 140 L26 130 L50 86 L38 74 L58 40 L50 30 Z" fill="currentColor"/></g></svg>
       <p class="kicker section-kicker" data-motion="reveal">Tanda Kasih</p>
       <h2 class="h2" data-motion="reveal">Amplop Digital</h2>
@@ -341,6 +372,7 @@ section[data-scene]::before{content:"";position:absolute;left:50%;bottom:-4px;z-
 <script src="engine/parallax.js"></script>
 <script src="engine/motion.js"></script>
 <script src="engine/ambient.js"></script>
+<script src="engine/flyers.js"></script>
 <script src="engine/camera.js"></script>
 <script src="engine/animation.js"></script>
 <script src="engine/scene.js"></script>
