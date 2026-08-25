@@ -141,7 +141,7 @@ for (const f of ['../scenes/opening','theme','performance','parallax','motion','
   for (const needle of ['assets/video/hero-loop.mp4', 'assets/video/petals-loop.mp4', 'autoplay muted loop playsinline', 'deco-backdrop', 'data-speed="0.08"']) {
     assert.ok(html.includes(needle), `index.html harus memuat "${needle}"`);
   }
-  assert.strictEqual(html.split('preload="metadata"').length - 1, 2, 'total video background tepat 2');
+  assert.strictEqual(html.split('class="bg-video"').length - 1, 2, 'total video background tepat 2');
 
   // Restraint budget v2: kelopak 8, kunang 8, tap-to-open tetap ada.
   assert.strictEqual(byId.petalLayer.children.length, 8, 'kelopak tepat 8 span');

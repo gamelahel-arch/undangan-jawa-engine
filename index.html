@@ -118,7 +118,7 @@ main>section[data-scene].location-section{background:linear-gradient(180deg,var(
 
 /* ===== AMBIENT V2: kelopak 8 + kunang 8 + mist 2 — lambat, fase acak, hemat DOM. ===== */
 #ambientLayer{position:fixed;inset:0;z-index:90;pointer-events:none;overflow:hidden}
-.mist{position:absolute;width:68vmax;height:68vmax;border-radius:50%;filter:blur(46px);mix-blend-mode:screen;will-change:transform}
+.mist{position:absolute;width:80vmax;height:80vmax;border-radius:50%;background:radial-gradient(circle,rgba(243,233,215,.09),rgba(243,233,215,.035) 42%,transparent 70%);mix-blend-mode:screen;will-change:transform}
 .m1{top:-24vmax;left:-18vmax;background:radial-gradient(circle,rgba(243,233,215,.07),transparent 62%);animation:mistA 36s ease-in-out -8s infinite alternate}
 .m2{bottom:-30vmax;right:-22vmax;background:radial-gradient(circle,rgba(201,168,76,.06),transparent 60%);animation:mistB 44s ease-in-out -22s infinite alternate}
 @keyframes mistA{from{transform:translate3d(-4%,2%,0)}to{transform:translate3d(5%,-3%,0)}}
@@ -188,6 +188,11 @@ main>section[data-scene].location-section{background:linear-gradient(180deg,var(
 
 @media (min-width:680px){section[data-scene]{min-height:auto;padding:140px 36px}.couple-grid{grid-template-columns:1fr 1fr}.gallery-flow{padding-left:calc(50vw - 145px);padding-right:calc(50vw - 145px)}.gallery-card{flex-basis:290px}.cd-grid{gap:14px}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.motion-ready [data-motion]{opacity:1!important;transform:none!important;transition-delay:0ms!important}#ambientLayer,#flyersLayer,.corner-flora{display:none}.bg-video{display:none} /* fallback: poster/foto statis di background section */}
+html[data-quality=low] .bg-video{display:none}
+html[data-quality=low] #ambientLayer .fly{display:none}
+html[data-quality=low] .mist:nth-child(3){display:none}
+section[data-scene]{content-visibility:auto;contain-intrinsic-size:auto 844px}
+.corner-flora,.video-overlay,.location-card{contain:paint}
 </style>
 </head>
 <body class="opening-locked">
@@ -216,7 +221,7 @@ main>section[data-scene].location-section{background:linear-gradient(180deg,var(
 
   <main id="invitationContent" tabindex="-1">
     <section class="scene-hero" data-scene aria-label="Pembuka undangan">
-      <video class="bg-video" autoplay muted loop playsinline preload="metadata" poster="assets/img/hero.jpg" aria-hidden="true" tabindex="-1"><source src="assets/video/hero-loop.mp4" type="video/mp4"></video>
+      <video class="bg-video" autoplay muted loop playsinline preload="none" poster="assets/img/hero.jpg" aria-hidden="true" tabindex="-1"><source src="assets/video/hero-loop.mp4" type="video/mp4"></video>
       <span class="video-overlay" aria-hidden="true"></span>
       <svg class="corner-flora cf-tl" viewBox="0 0 160 160" aria-hidden="true"><g fill="none" stroke="url(#floraGold)" stroke-width="1.2" stroke-linecap="round"><path d="M10 156 C48 128 68 88 72 24"/><path d="M36 132 C24 120 21 104 29 91 C42 102 45 119 36 132 Z" fill="url(#floraGold)" fill-opacity=".16"/><path d="M56 102 C68 93 83 92 96 99 C87 111 69 112 56 102 Z" fill="url(#floraGold)" fill-opacity=".16"/><path d="M66 66 C57 55 55 41 63 29 C74 39 76 55 66 66 Z" fill="url(#floraGold)" fill-opacity=".16"/><circle cx="78" cy="44" r="2.1" fill="url(#floraGold)" stroke="none"/><circle cx="60" cy="20" r="1.5" fill="url(#floraGold)" stroke="none"/></g></svg>
       <div class="hero-frame" data-motion="zoom">
@@ -292,7 +297,7 @@ main>section[data-scene].location-section{background:linear-gradient(180deg,var(
     </section>
 
     <section class="closing" data-scene aria-label="Amplop digital">
-      <video class="bg-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1"><source src="assets/video/petals-loop.mp4" type="video/mp4"></video>
+      <video class="bg-video" autoplay muted loop playsinline preload="none" data-lazy-video aria-hidden="true" tabindex="-1"><source src="assets/video/petals-loop.mp4" type="video/mp4"></video>
       <span class="video-overlay" aria-hidden="true"></span>
       <svg class="corner-flora cf-tr" viewBox="0 0 160 160" aria-hidden="true"><g fill="none" stroke="url(#floraGold)" stroke-width="1.2" stroke-linecap="round"><path d="M10 156 C48 128 68 88 72 24"/><path d="M36 132 C24 120 21 104 29 91 C42 102 45 119 36 132 Z" fill="url(#floraGold)" fill-opacity=".16"/><path d="M56 102 C68 93 83 92 96 99 C87 111 69 112 56 102 Z" fill="url(#floraGold)" fill-opacity=".16"/><path d="M66 66 C57 55 55 41 63 29 C74 39 76 55 66 66 Z" fill="url(#floraGold)" fill-opacity=".16"/><circle cx="78" cy="44" r="2.1" fill="url(#floraGold)" stroke="none"/><circle cx="60" cy="20" r="1.5" fill="url(#floraGold)" stroke="none"/></g></svg>
       <p class="kicker section-kicker" data-motion="reveal">Tanda Kasih</p>

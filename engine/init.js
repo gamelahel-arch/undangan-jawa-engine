@@ -24,6 +24,22 @@ const App = {
     MotionEngine.init();
     AmbientEngine.init();
     FlyersEngine.init();
+    // No-GPU hemat: video hanya play saat terlihat (IO), pause saat keluar viewport
+    const lazyVideos = document.querySelectorAll('[data-lazy-video], .bg-video');
+    if ('IntersectionObserver' in window && lazyVideos.length) {
+      const vio = new IntersectionObserver((ents) => {
+        ents.forEach((en) => {
+          const v = en.target;
+          if (en.isIntersecting) { v.play().catch(() => {}); }
+          else v.pause();
+        });
+      }, { rootMargin: '120px' });
+      lazyVideos.forEach((v) => {
+        v.removeAttribute('autoplay');
+        if (!document.documentElement.dataset.quality || document.documentElement.dataset.quality !== 'low') vio.observe(v);
+        else v.pause();
+      });
+    }
     GalleryFlow.init();
     setupOpening(data, theme);
   }
