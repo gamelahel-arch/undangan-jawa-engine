@@ -99,15 +99,68 @@ section.scene-hero{display:flex;min-height:96dvh;padding-top:110px!important;bac
 
 /* Reveal hanya memakai transform/opacity; tidak ada animasi properti layout. */
 .motion-ready [data-motion~="reveal"]{opacity:0;transform:translate3d(0,30px,0);transition:opacity .72s var(--ease-out),transform .72s var(--ease-out);transition-delay:calc(var(--i,0) * 95ms);will-change:transform,opacity}.motion-ready [data-motion~="zoom"]{opacity:0;transform:translate3d(0,18px,0) scale(.92);transition:opacity .82s var(--ease-out),transform .82s var(--ease-out);transition-delay:calc(var(--i,0) * 95ms);will-change:transform,opacity}.motion-ready [data-motion~="reveal"].in,.motion-ready [data-motion~="zoom"].in{opacity:1;transform:translate3d(0,0,0) scale(1)}.motion-ready [data-motion~="parallax"]{will-change:transform}.scene-active .section-kicker{color:var(--gold-pale)}
+/* ====== LIVING: ambient loop terus-menerus — hanya transform/opacity, filter statis ====== */
+#ambientLayer{position:fixed;inset:0;z-index:90;pointer-events:none;overflow:hidden}
+.mist{position:absolute;width:68vmax;height:68vmax;border-radius:50%;filter:blur(46px);mix-blend-mode:screen;will-change:transform}
+.m1{top:-24vmax;left:-18vmax;background:radial-gradient(circle,rgba(243,233,215,.08),transparent 62%);animation:mistA 34s ease-in-out -8s infinite alternate}
+.m2{bottom:-30vmax;right:-22vmax;background:radial-gradient(circle,rgba(201,168,76,.07),transparent 60%);animation:mistB 41s ease-in-out -20s infinite alternate}
+.m3{top:26%;left:32%;width:50vmax;height:50vmax;background:radial-gradient(circle,rgba(243,233,215,.05),transparent 58%);animation:mistB 47s ease-in-out -31s infinite alternate-reverse}
+html[data-quality="low"] .m3{display:none}
+@keyframes mistA{from{transform:translate3d(-4%,2%,0)}to{transform:translate3d(5%,-3%,0)}}
+@keyframes mistB{from{transform:translate3d(3%,-2%,0) scale(1.04)}to{transform:translate3d(-4%,3%,0) scale(1)}}
+.fly{position:absolute;border-radius:50%;background:#e9ce69;box-shadow:0 0 6px 1px rgba(233,206,105,.75),0 0 14px 3px rgba(201,168,76,.35);opacity:.5;animation:flyDrift var(--dur,14s) ease-in-out infinite alternate,flyGlow calc(var(--dur,14s)/3) ease-in-out infinite}
+@keyframes flyDrift{from{transform:translate3d(0,0,0)}50%{transform:translate3d(calc(var(--dx,12px)* -.7),var(--dy,-30px),0)}to{transform:translate3d(var(--dx,12px),calc(var(--dy,-30px)* .45),0)}}
+@keyframes flyGlow{0%,100%{opacity:.22}50%{opacity:.95}}
+.twinkle{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--ivory);box-shadow:0 0 8px 2px rgba(243,233,215,.6);opacity:0;animation:twinklePulse var(--dur,3.6s) ease-in-out infinite;pointer-events:none}
+@keyframes twinklePulse{0%,100%{opacity:0;transform:scale(.6)}50%{opacity:.85;transform:scale(1)}}
+/* Hiasan gantung bergoyang */
+.hang-row{position:absolute;top:0;left:14px;right:14px;display:flex;justify-content:space-around;z-index:2;pointer-events:none}
+.hang{display:block;position:relative;width:1px;height:64px;background:linear-gradient(180deg,rgba(212,185,120,0),rgba(212,185,120,.55));transform-origin:top center;animation:sway var(--sd,4.2s) ease-in-out infinite alternate}
+.hang::after{content:"";position:absolute;left:50%;bottom:-10px;width:9px;height:9px;transform:translateX(-50%) rotate(45deg);background:linear-gradient(135deg,#e9ce69,#8a6d1c);box-shadow:0 0 10px rgba(201,168,76,.5)}
+.hang:nth-child(2n){height:44px;--sd:3.4s}.hang:nth-child(2n)::after{border-radius:50%;transform:translateX(-50%)}
+.hang:nth-child(3n){height:80px;--sd:4.8s}.hang:nth-child(3n)::after{content:"✦";width:auto;height:auto;background:none;box-shadow:none;color:var(--gold-pale);font-size:13px;transform:translateX(-50%)}
+.hang:nth-child(4n){--sd:3.8s}.hang:nth-child(5n){height:52px;--sd:4.4s;animation-delay:-1.6s}
+@keyframes sway{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
+/* Dekorasi parallax besar per section */
+.deco-glow{position:absolute;top:5%;left:0;right:0;margin:0 auto;width:min(540px,120vw);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(124,91,34,.17),transparent 62%);pointer-events:none}
+.gallery-section .deco-glow{top:auto;bottom:8%;width:min(430px,100vw);background:radial-gradient(circle,rgba(124,91,34,.13),transparent 60%)}
+.deco-ring{position:absolute;top:16%;left:0;right:0;margin:0 auto;width:min(430px,102vw);aspect-ratio:1;border-radius:50%;border:1px dashed rgba(201,168,76,.15);pointer-events:none}
+.deco-ring::before{content:"";position:absolute;inset:40px;border-radius:50%;border:1px solid rgba(201,168,76,.09)}
+.deco-gunungan{position:absolute;bottom:5%;right:-26px;width:150px;color:var(--gold-pale);opacity:.05;pointer-events:none}
+.deco-gunungan.left{left:-26px;right:auto}
+/* Divider ornamen emas di batas tiap section */
+section[data-scene]::before{content:"";position:absolute;left:50%;bottom:-4px;z-index:1;width:7px;height:7px;border:1px solid var(--gold);transform:translateX(-50%) rotate(45deg);box-shadow:0 0 8px rgba(201,168,76,.35)}
+.closing::before{display:none}
+/* Ampel/pahat: baris titik truntum di tepi atas & bawah section */
+.ampel{position:absolute;left:22px;right:22px;height:9px;pointer-events:none;opacity:.55;background-image:radial-gradient(circle,rgba(201,168,76,.55) 0 1px,transparent 1.7px),radial-gradient(circle,rgba(201,168,76,.3) 0 1px,transparent 1.7px);background-size:13px 9px,13px 9px;background-position:0 1px,6.5px 5px;background-repeat:repeat-x;-webkit-mask-image:linear-gradient(90deg,transparent,#000 25% 75%,transparent);mask-image:linear-gradient(90deg,transparent,#000 25% 75%,transparent)}
+.ampel.bt{top:auto;bottom:0}
+/* Sudut kartu emas ganda: bingkai dalam hairline + flourish sudut */
+.orn-corners{position:absolute;inset:5px;pointer-events:none;border:1px solid rgba(243,233,215,.11)}
+.orn-corners::before,.orn-corners::after{content:"";position:absolute;width:13px;height:13px;border:0 solid rgba(212,185,120,.8)}
+.orn-corners::before{top:-1px;left:-1px;border-top-width:1px;border-left-width:1px}
+.orn-corners::after{bottom:-1px;right:-1px;border-bottom-width:1px;border-right-width:1px}
+/* Micro-motion persist: kartu yang sudah reveal tetap mengapung halus selamanya.
+   ponytail: delay positif menunggu transisi reveal selesai (tanpa listener transitionend);
+   naikkan ke dua-fase class bila sinkronisasi terasa kasat. */
+@keyframes cardFloat{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-4px,0)}}
+.motion-ready .hero-frame.in,.motion-ready .tl-item.in,.motion-ready .couple-card.in,.motion-ready .gift-card.in{animation:cardFloat var(--fdur,7s) ease-in-out infinite;animation-delay:calc(1s + var(--i,0)*95ms)}
+.tl-item:nth-child(2n),.couple-grid .couple-card:nth-child(2){--fdur:8.2s}
 
 @media (min-width:680px){section[data-scene]{min-height:auto;padding:140px 36px}.couple-grid{grid-template-columns:1fr 1fr}.gallery-flow{padding-left:calc(50vw - 145px);padding-right:calc(50vw - 145px)}.gallery-card{flex-basis:290px}}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.motion-ready [data-motion]{opacity:1!important;transform:none!important;transition-delay:0ms!important}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.motion-ready [data-motion]{opacity:1!important;transform:none!important;transition-delay:0ms!important}#ambientLayer,.hang-row,.ampel{display:none}}
 </style>
 </head>
 <body class="opening-locked">
 <div id="world">
+  <div id="ambientLayer" aria-hidden="true">
+    <div class="mist m1"></div>
+    <div class="mist m2"></div>
+    <div class="mist m3"></div>
+    <div id="dustLayer"></div>
+  </div>
   <div id="opening" data-scene role="dialog" aria-modal="true" aria-label="Sampul undangan">
     <div class="batik-field" aria-hidden="true"></div>
+    <div class="hang-row" aria-hidden="true"><span class="hang"></span><span class="hang"></span><span class="hang"></span><span class="hang"></span><span class="hang"></span></div>
     <div class="opening-content">
       <p class="kicker">Undangan Pernikahan Adat Jawa</p>
       <button class="env-scene" id="envScene" type="button" aria-label="Ketuk amplop untuk membuka undangan" aria-expanded="false">
@@ -129,6 +182,8 @@ section.scene-hero{display:flex;min-height:96dvh;padding-top:110px!important;bac
 
   <main id="invitationContent" tabindex="-1">
     <section class="scene-hero" data-scene aria-label="Pembuka undangan">
+      <div class="hang-row" aria-hidden="true"><span class="hang"></span><span class="hang"></span><span class="hang"></span><span class="hang"></span><span class="hang"></span></div>
+      <span class="deco-glow" data-motion="parallax" data-speed="0.06" aria-hidden="true"></span>
       <div class="batik-field" aria-hidden="true"></div>
       <div class="hero-frame" data-motion="zoom">
         <p class="kicker" data-motion="reveal">The Wedding Of</p>
@@ -140,6 +195,7 @@ section.scene-hero{display:flex;min-height:96dvh;padding-top:110px!important;bac
     </section>
 
     <section class="story-section" data-scene aria-label="Cerita perjalanan">
+      <svg class="deco-gunungan" data-motion="parallax" data-speed="0.08" viewBox="0 0 120 200" aria-hidden="true"><path d="M60 4 L70 30 L62 40 L82 74 L70 86 L94 130 L80 140 L90 178 L30 178 L40 140 L26 130 L50 86 L38 74 L58 40 L50 30 Z" fill="currentColor"/></svg>
       <p class="kicker section-kicker" data-motion="reveal">Sepenggal Kisah</p>
       <h2 class="h2" data-motion="reveal">Perjalanan Kami</h2>
       <span class="gold-rule" data-motion="reveal"></span>
@@ -147,6 +203,7 @@ section.scene-hero{display:flex;min-height:96dvh;padding-top:110px!important;bac
     </section>
 
     <section class="gallery-section" data-scene aria-label="Galeri kenangan">
+      <span class="deco-glow" data-motion="parallax" data-speed="0.09" aria-hidden="true"></span>
       <div class="section-heading">
         <p class="kicker section-kicker" data-motion="reveal">Rangkaian Adat</p>
         <h2 class="h2" data-motion="reveal">Galeri Kenangan</h2>
@@ -157,6 +214,7 @@ section.scene-hero{display:flex;min-height:96dvh;padding-top:110px!important;bac
     </section>
 
     <section data-scene aria-label="Mempelai">
+      <span class="deco-ring" data-motion="parallax" data-speed="0.07" aria-hidden="true"></span>
       <p class="kicker section-kicker" data-motion="reveal">Dua Insan</p>
       <h2 class="h2" data-motion="reveal">Mempelai</h2>
       <div class="couple-grid">
@@ -185,6 +243,7 @@ section.scene-hero{display:flex;min-height:96dvh;padding-top:110px!important;bac
     </section>
 
     <section class="closing" data-scene aria-label="Amplop digital">
+      <svg class="deco-gunungan left" data-motion="parallax" data-speed="0.14" viewBox="0 0 120 200" aria-hidden="true"><g transform="translate(120,0) scale(-1,1)"><path d="M60 4 L70 30 L62 40 L82 74 L70 86 L94 130 L80 140 L90 178 L30 178 L40 140 L26 130 L50 86 L38 74 L58 40 L50 30 Z" fill="currentColor"/></g></svg>
       <p class="kicker section-kicker" data-motion="reveal">Tanda Kasih</p>
       <h2 class="h2" data-motion="reveal">Amplop Digital</h2>
       <div class="gift-card" data-motion="zoom">
@@ -201,6 +260,7 @@ section.scene-hero{display:flex;min-height:96dvh;padding-top:110px!important;bac
 <script src="engine/performance.js"></script>
 <script src="engine/parallax.js"></script>
 <script src="engine/motion.js"></script>
+<script src="engine/ambient.js"></script>
 <script src="engine/camera.js"></script>
 <script src="engine/animation.js"></script>
 <script src="engine/scene.js"></script>

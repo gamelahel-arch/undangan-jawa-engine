@@ -21,6 +21,7 @@ const App = {
     SceneManager.init();
     Interaction.init(theme.motion.intensity);
     MotionEngine.init();
+    AmbientEngine.init();
     GalleryFlow.init();
     setupOpening(data, theme);
   }

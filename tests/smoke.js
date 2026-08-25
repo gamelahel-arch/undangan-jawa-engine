@@ -26,7 +26,7 @@ global.IntersectionObserver = class { observe(){} unobserve(){} disconnect(){} }
 
 // load engine files in order
 const fs = require('fs');
-for (const f of ['../scenes/opening','theme','performance','parallax','motion','camera','animation','scene','interaction','renderer','init']) {
+for (const f of ['../scenes/opening','theme','performance','parallax','motion','ambient','camera','animation','scene','interaction','renderer','init']) {
   require('vm').runInThisContext(fs.readFileSync('engine/'+f+'.js','utf8'),{filename:f+'.js'});
 }
 // run start
@@ -35,6 +35,7 @@ for (const f of ['../scenes/opening','theme','performance','parallax','motion','
   // Phase 2 assertions: modul baru load & state benar
   const assert = require('assert');
   assert.strictEqual(typeof MotionEngine.init, 'function', 'MotionEngine harus terdefinisi');
+  assert.strictEqual(typeof AmbientEngine.init, 'function', 'AmbientEngine harus terdefinisi');
   assert.ok(Array.isArray(ParallaxManager.linked), 'ParallaxManager.linked harus array');
   console.log('SMOKE TEST PASS — App.start selesai tanpa error'); process.exit(0);
 })().catch(e => { console.error('SMOKE TEST FAIL:', e.message); process.exit(1); });
