@@ -16,7 +16,7 @@ const Renderer = {
     // story timeline
     const tl = $('#storyTl');
     d.story.forEach((s, i) => {
-      const item = document.createElement('div'); item.className = 'tl-item rv3d';
+      const item = document.createElement('div'); item.className = 'tl-item'; item.dataset.motion = 'reveal';
       const y = document.createElement('div'); y.className = 'tl-year'; y.textContent = s.year;
       const t = document.createElement('h3'); t.textContent = s.title;
       const p = document.createElement('p'); p.textContent = s.text;
@@ -24,8 +24,9 @@ const Renderer = {
     });
     // gallery dari data
     const wrap = $('#galWrapper');
-    d.gallery.forEach(g => {
+    d.gallery.forEach((g, i) => {
       const slide = document.createElement('div'); slide.className = 'swiper-slide';
+      slide.dataset.motion = 'zoom'; slide.style.setProperty('--i', i);
       const fig = document.createElement('figure');
       const img = document.createElement('img'); img.src = g.src; img.alt = g.caption; img.loading = 'lazy';
       const cap = document.createElement('figcaption'); cap.textContent = g.caption;

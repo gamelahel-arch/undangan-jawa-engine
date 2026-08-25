@@ -79,12 +79,24 @@ body.opened #opening::after{transform:translateY(101%)}
 main{position:relative}
 section[data-scene]{max-width:660px;margin:0 auto;padding:96px 24px;text-align:center}
 .h2{font-family:var(--font-heading);font-weight:500;font-size:clamp(26px,7vw,34px)}
-.scene-active .rv3d{opacity:1;transform:none}
-.rv3d{opacity:0;transform:translateY(36px) translateZ(-90px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
+
+/* ---- PHASE 2: scroll motion engine (reveal/stagger/parallax) ---- */
+/* hidden-state hanya saat .motion-ready (JS aktif) — no-JS tetap terlihat */
+.motion-ready [data-motion~="reveal"]{
+  opacity:0;transform:translateY(28px);
+  transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1);
+  transition-delay:calc(var(--i,0)*90ms);will-change:opacity,transform}
+.motion-ready [data-motion~="zoom"]{
+  opacity:0;transform:scale(.92);
+  transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1);
+  transition-delay:calc(var(--i,0)*90ms)}
+.motion-ready [data-motion~="parallax"]{will-change:transform}
+[data-motion~="reveal"].in,[data-motion~="zoom"].in{opacity:1;transform:none;transition-delay:var(--i,0)}
 
 /* reduced motion */
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  .motion-ready [data-motion]{opacity:1!important;transform:none!important;transition-delay:0ms!important}
   html{scroll-behavior:auto}
 }
 </style>
@@ -118,16 +130,50 @@ section[data-scene]{max-width:660px;margin:0 auto;padding:96px 24px;text-align:c
   <!-- SHELL scene berikutnya (Phase 4) -->
   <main>
     <section data-scene aria-label="Hero">
-      <h2 class="h2 rv3d" id="heroNames">—</h2>
-      <p class="rv3d" id="heroDate" style="margin-top:10px;color:var(--muted);font-size:13px">—</p>
+      <h2 class="h2" id="heroNames" data-motion="reveal">—</h2>
+      <p id="heroDate" data-motion="reveal" style="margin-top:10px;color:var(--muted);font-size:13px">—</p>
     </section>
     <section data-scene aria-label="Cerita">
-      <h2 class="h2 rv3d">Perjalanan Kami</h2>
-      <div id="storyTl" style="margin-top:28px;display:grid;gap:26px;text-align:left"></div>
+      <h2 class="h2" data-motion="reveal">Perjalanan Kami</h2>
+      <div id="storyTl" data-motion="stagger" style="margin-top:28px;display:grid;gap:26px;text-align:left"></div>
     </section>
     <section data-scene aria-label="Galeri">
-      <h2 class="h2 rv3d">Galeri</h2>
-      <div class="swiper-wrapper" id="galWrapper" style="margin-top:26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px"></div>
+      <h2 class="h2" data-motion="reveal">Galeri</h2>
+      <div class="swiper-wrapper" id="galWrapper" data-motion="stagger"
+        style="margin-top:26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px"></div>
+    </section>
+    <section data-scene aria-label="Mempelai">
+      <div style="display:grid;gap:24px">
+        <div data-motion="reveal">
+          <p class="kicker">Mempelai Pria</p>
+          <h3 class="h2" id="groomFull" style="margin-top:8px;font-size:clamp(20px,5.5vw,26px)">—</h3>
+          <p style="margin-top:6px;color:var(--muted);font-size:13px" id="groomParents">—</p>
+        </div>
+        <div data-motion="reveal">
+          <p class="kicker">Mempelai Wanita</p>
+          <h3 class="h2" id="brideFull" style="margin-top:8px;font-size:clamp(20px,5.5vw,26px)">—</h3>
+          <p style="margin-top:6px;color:var(--muted);font-size:13px" id="brideParents">—</p>
+        </div>
+      </div>
+    </section>
+    <section data-scene aria-label="Lokasi">
+      <h2 class="h2" data-motion="reveal">Lokasi Acara</h2>
+      <figure data-motion="parallax" data-speed="0.08" style="margin:22px auto 0;max-width:420px">
+        <img src="assets/img/hero.svg" alt="Pendopo Agung" loading="lazy" style="width:100%;border:1px solid var(--border)">
+      </figure>
+      <h3 id="venueName" data-motion="reveal" style="margin-top:18px;font-family:var(--font-heading);font-weight:500;font-size:20px">—</h3>
+      <p id="venueAddr" data-motion="reveal" style="margin-top:6px;color:var(--muted);font-size:13px">—</p>
+      <a id="mapsBtn" data-motion="reveal" href="#" target="_blank" rel="noopener"
+        style="display:inline-block;margin-top:14px;padding:10px 24px;border:1px solid var(--gold);color:var(--gold);
+        font-size:10px;letter-spacing:.28em;text-transform:uppercase;text-decoration:none">Buka di Google Maps</a>
+    </section>
+    <section data-scene aria-label="Amplop digital">
+      <h2 class="h2" data-motion="reveal">Amplop Digital</h2>
+      <div data-motion="zoom" style="margin:22px auto 0;max-width:340px;padding:24px;border:1px solid var(--border);background:var(--surface)">
+        <p class="kicker">Transfer Bank</p>
+        <p id="giftBank" style="margin-top:10px;font-family:var(--font-heading);font-size:18px">—</p>
+        <p id="giftHolder" style="margin-top:4px;color:var(--muted);font-size:12px">—</p>
+      </div>
     </section>
   </main>
 
@@ -137,6 +183,7 @@ section[data-scene]{max-width:660px;margin:0 auto;padding:96px 24px;text-align:c
 <script src="engine/theme.js"></script>
 <script src="engine/performance.js"></script>
 <script src="engine/parallax.js"></script>
+<script src="engine/motion.js"></script>
 <script src="engine/camera.js"></script>
 <script src="engine/animation.js"></script>
 <script src="engine/scene.js"></script>

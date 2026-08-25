@@ -24,7 +24,10 @@ const App = {
     // 4. render konten dari data
     Renderer.run(data, theme);
 
-    // 5. opening sequence
+    // 5. Phase 2: scroll motion engine (reveal/stagger/parallax-linked)
+    MotionEngine.init();
+
+    // 6. opening sequence
     AnimationManager.play('opening');
     setupOpening(data, theme);
   }
