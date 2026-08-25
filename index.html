@@ -8,178 +8,188 @@
 <meta property="og:title" content="Pernikahan Arga &amp; Larasati">
 <meta property="og:description" content="Sabtu, 5 Desember 2026 — Yogyakarta">
 <meta name="theme-color" content="#1c130d">
+<link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@300;400;600&family=Ruthie&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@300;400;600&family=Ruthie&display=swap" rel="stylesheet">
 <style>
-/* tokens default — dioverride ThemeEngine saat runtime */
 :root{
   --bg:#1c130d; --surface:#241811; --surface2:#2e2114; --fg:#f3e9d7;
-  --muted:#b7a68e; --gold:#c9a227; --border:rgba(201,162,39,.25);
+  --muted:#b7a68e; --gold:#c9a227; --gold-pale:#e0bd4a; --ivory:#f3e9d7;
+  --ink:#3a2a1a; --border:rgba(201,162,39,.28); --hairline:rgba(243,233,215,.13);
   --font-heading:'Cormorant Garamond',serif; --font-display:'Ruthie',cursive; --font-body:'Manrope',sans-serif;
+  --ease-out:cubic-bezier(.22,1,.36,1); --ease-curtain:cubic-bezier(.77,0,.18,1);
 }
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--fg);font-family:var(--font-body);overflow-x:hidden;
-  -webkit-font-smoothing:antialiased}
-#world{min-height:100dvh}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);scroll-behavior:smooth}
+body{min-width:320px;background:var(--bg);color:var(--fg);font-family:var(--font-body);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body.opening-locked{overflow:hidden;overscroll-behavior:none}
+button,a{font:inherit}
+button{border:0}
+img{display:block;max-width:100%}
+#world{min-height:100dvh;isolation:isolate}
 
-/* ---- OPENING SCENE (prototype scene Phase 1) ---- */
-#opening{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;padding:24px;text-align:center;
-  background:radial-gradient(1100px 640px at 50% 22%, #33241a 0%, var(--bg) 65%)}
-#opening::before,#opening::after{content:"";position:absolute;left:0;width:100%;height:50.5%;
-  background:linear-gradient(180deg,var(--surface),var(--surface2));
-  transition:transform 1.3s cubic-bezier(.77,0,.18,1);z-index:-1}
+/* Batik kawung yang ringan, dibuat dari CSS tanpa aset tambahan. */
+.batik-field{position:absolute;inset:0;pointer-events:none;opacity:.23;background-image:
+  radial-gradient(ellipse at 50% 0,transparent 0 39%,rgba(201,162,39,.42) 40% 42%,transparent 43%),
+  radial-gradient(ellipse at 50% 100%,transparent 0 39%,rgba(201,162,39,.42) 40% 42%,transparent 43%);
+  background-size:54px 54px;background-position:0 0,27px 27px;mask-image:linear-gradient(to bottom,transparent,black 15%,black 85%,transparent)}
+
+/* Opening: tombol utuh sehingga satu tap selalu menuju handler yang sama. */
+#opening{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:calc(24px + env(safe-area-inset-top)) 24px calc(24px + env(safe-area-inset-bottom));text-align:center;overflow:hidden;background:radial-gradient(100% 70% at 50% 20%,#3a281a 0%,var(--bg) 66%);transition:opacity .2s ease,visibility 0s linear .2s}
+#opening::before,#opening::after{content:"";position:absolute;left:0;width:100%;height:50.5%;z-index:-1;background:linear-gradient(180deg,var(--surface),var(--surface2));transition:transform 1.18s var(--ease-curtain)}
 #opening::before{top:0;border-bottom:1px solid var(--border)}
 #opening::after{bottom:0;border-top:1px solid var(--border)}
-body.opened #opening{pointer-events:none}
-body.opened #opening::before{transform:translateY(-101%)}
-body.opened #opening::after{transform:translateY(101%)}
-
-.kicker{font-size:10px;letter-spacing:.42em;text-transform:uppercase;color:var(--muted)}
-.env-scene{perspective:1200px;width:min(300px,78vw);height:200px;margin:30px auto 0;cursor:pointer}
-.env{position:relative;width:100%;height:100%;transform-style:preserve-3d;animation:envFloat 5s ease-in-out infinite}
-@keyframes envFloat{0%,100%{transform:rotateX(10deg) translateY(0)}50%{transform:rotateX(6deg) translateY(-8px)}}
-.env.opening{animation:none;transform:rotateX(26deg) translateZ(30px);transition:transform .9s ease}
-.env-body{position:absolute;inset:0;background:linear-gradient(155deg,var(--surface2),var(--surface));
-  border:1px solid var(--border);box-shadow:0 24px 60px -18px rgba(0,0,0,.8)}
-.env-flap{position:absolute;left:0;top:0;width:100%;height:58%;transform-origin:top center;
-  background:linear-gradient(180deg,#45301c,var(--surface2));clip-path:polygon(0 0,100% 0,50% 100%);
-  transition:transform 900ms cubic-bezier(.2,.8,.2,1) .15s;z-index:3;backface-visibility:hidden;
-  border-bottom:1px solid var(--border)}
+body.opened #opening{pointer-events:none;opacity:0;visibility:hidden}
+body.opened #opening::before{transform:translate3d(0,-101%,0)}
+body.opened #opening::after{transform:translate3d(0,101%,0)}
+.opening-content{position:relative;z-index:1;width:min(100%,340px)}
+.kicker{font-size:9px;letter-spacing:.34em;text-transform:uppercase;color:var(--muted);line-height:1.7}
+.env-scene{display:block;position:relative;width:min(300px,82vw);height:206px;margin:26px auto 0;padding:0;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;background:transparent;user-select:none;perspective:1200px;outline-offset:10px}
+.env-scene:focus-visible{outline:1px solid var(--gold-pale)}
+.env{display:block;position:relative;width:100%;height:100%;transform-style:preserve-3d;animation:envFloat 5s ease-in-out infinite;will-change:transform}
+@keyframes envFloat{0%,100%{transform:rotateX(10deg) translate3d(0,0,0)}50%{transform:rotateX(6deg) translate3d(0,-7px,0)}}
+.env.opening{animation:none;transform:rotateX(26deg) translate3d(0,0,30px);transition:transform .82s var(--ease-out)}
+.env-body{position:absolute;inset:0;overflow:hidden;background:linear-gradient(155deg,var(--surface2),var(--surface));border:1px solid var(--border);box-shadow:0 24px 60px -18px rgba(0,0,0,.8)}
+.env-body::before,.env-body::after{content:"";position:absolute;inset:0;background:linear-gradient(35deg,transparent 49.5%,rgba(201,162,39,.16) 50%,transparent 50.5%);opacity:.72}
+.env-body::after{transform:scaleX(-1)}
+.env-flap{position:absolute;inset:0 0 auto;width:100%;height:58%;transform-origin:top center;background:linear-gradient(180deg,#4c351e,var(--surface2));clip-path:polygon(0 0,100% 0,50% 100%);transition:transform .82s var(--ease-out) .1s;z-index:3;backface-visibility:hidden;border-bottom:1px solid var(--border)}
 .env.opening .env-flap{transform:rotateX(-180deg);z-index:1}
-.env-seal{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);width:44px;height:44px;pointer-events:none;
-  border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0bd4a,#8a6d1c);
-  display:flex;align-items:center;justify-content:center;z-index:4;
-  box-shadow:0 6px 18px rgba(0,0,0,.5),inset 0 2px 6px rgba(255,255,255,.25);
-  transition:transform .55s ease,opacity .45s ease}
-.env.opening .env-seal{transform:translate(-50%,-50%) scale(1.6);opacity:0}
-.env-card{position:absolute;left:6%;right:6%;top:10%;bottom:10%;z-index:2;
-  background:linear-gradient(160deg,#f3e9d7,#e8d9bd);color:#3a2a1a;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
-  box-shadow:0 14px 40px -10px rgba(0,0,0,.5);
-  transform:translateY(0);transition:transform 1s cubic-bezier(.22,1,.36,1) .5s}
-.env.opening .env-card{transform:translateY(-48%) translateZ(80px) scale(1.05)}
-.ec-names{font-family:var(--font-display);font-size:32px;color:#7a5c22;line-height:1.15}
-.ec-date{font-family:var(--font-heading);font-style:italic;font-size:12px;letter-spacing:.14em}
-.btn-open{margin-top:9px;padding:9px 22px;border:1px solid #7a5c22;background:transparent;color:#5d451a;
-  font-family:var(--font-body);font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;cursor:pointer;
-  transition:background .3s,color .3s}
-.btn-open:hover{background:#7a5c22;color:#f3e9d7}
-.env-hint{margin-top:18px;font-size:10px;letter-spacing:.34em;text-transform:uppercase;
-  color:var(--muted);opacity:0;animation:hintPulse 2.4s ease-in-out infinite}
-@keyframes hintPulse{0%,100%{opacity:.35}50%{opacity:.85}}
+.env-seal{position:absolute;left:50%;top:46%;width:46px;height:46px;transform:translate3d(-50%,-50%,0);border-radius:50%;background:radial-gradient(circle at 35% 30%,#e9ce69,#8a6d1c);z-index:4;box-shadow:0 6px 18px rgba(0,0,0,.5),inset 0 2px 6px rgba(255,255,255,.25);transition:transform .48s var(--ease-out),opacity .32s ease}
+.env-seal::after{content:"✦";display:grid;place-items:center;height:100%;font-size:17px;color:#5d451a}
+.env.opening .env-seal{transform:translate3d(-50%,-50%,0) scale(1.55);opacity:0}
+.env-card{position:absolute;left:6%;right:6%;top:10%;bottom:10%;z-index:2;display:grid;place-content:center;gap:4px;background:linear-gradient(160deg,#f9f0df,#e8d9bd);color:var(--ink);box-shadow:0 14px 40px -10px rgba(0,0,0,.5);transform:translate3d(0,0,0);transition:transform .92s var(--ease-out) .42s}
+.env.opening .env-card{transform:translate3d(0,-48%,80px) scale(1.05)}
+.ec-names{font-family:var(--font-display);font-size:32px;color:#7a5c22;line-height:1.05}
+.ec-date{font-family:var(--font-heading);font-size:12px;font-style:italic;letter-spacing:.14em}
+.env-action{margin-top:6px;padding:9px 14px;border:1px solid #7a5c22;color:#5d451a;font-size:9px;letter-spacing:.25em;text-transform:uppercase}
+.env-hint{margin-top:18px;font-size:9px;letter-spacing:.27em;text-transform:uppercase;color:var(--muted);animation:hintPulse 2.4s ease-in-out infinite}
+@keyframes hintPulse{0%,100%{opacity:.42}50%{opacity:.9}}
+.guest-line{margin-top:20px;font-size:10px;letter-spacing:.06em;color:var(--muted);line-height:1.65}.guest-name{display:block;margin-top:2px;font-weight:600;color:var(--fg);letter-spacing:.08em}
 
-/* guest name di sampul */
-.guest-line{margin-top:20px;font-size:11px;letter-spacing:.08em;color:var(--muted)}
-.guest-name{display:block;margin-top:3px;font-weight:600;color:var(--fg);letter-spacing:.06em}
+/* Scene shell */
+main{position:relative;visibility:visible;overflow:hidden}
+body:not(.opened) main{visibility:hidden}
+section[data-scene]{position:relative;max-width:700px;margin:0 auto;padding:92px 24px;text-align:center}
+section[data-scene]::after{content:"";position:absolute;right:24px;bottom:0;left:24px;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent)}
+.section-kicker{margin-bottom:12px}.h1,.h2,.h3{font-family:var(--font-heading);font-weight:600}.h1{font-size:clamp(48px,15vw,74px);line-height:.9}.h2{font-size:clamp(31px,8vw,42px);line-height:1.03}.h3{font-size:24px;line-height:1.1}.section-copy{margin:14px auto 0;max-width:34ch;color:var(--muted);font-size:13px;line-height:1.8}.gold-rule{display:block;width:54px;height:1px;margin:22px auto;background:var(--gold)}
 
-/* ---- SHELL konten (scene berikutnya menyusul Phase 4) ---- */
-main{position:relative}
-section[data-scene]{max-width:660px;margin:0 auto;padding:96px 24px;text-align:center}
-.h2{font-family:var(--font-heading);font-weight:500;font-size:clamp(26px,7vw,34px)}
+/* Hero */
+.scene-hero{display:grid;min-height:94dvh;place-items:center;padding-top:110px!important;background:radial-gradient(ellipse at 50% 50%,rgba(124,91,34,.2),transparent 63%)}
+.hero-frame{position:relative;width:min(100%,420px);padding:40px 20px 38px;border:1px solid var(--border);background:linear-gradient(145deg,rgba(46,33,20,.8),rgba(28,19,13,.4));box-shadow:0 28px 64px -44px #000}
+.hero-frame::before,.hero-frame::after{content:"";position:absolute;width:14px;height:14px;border-color:var(--gold);opacity:.85}.hero-frame::before{top:-1px;left:-1px;border-top:1px solid;border-left:1px solid}.hero-frame::after{right:-1px;bottom:-1px;border-right:1px solid;border-bottom:1px solid}.hero-date{margin-top:16px;color:var(--muted);font-size:12px;letter-spacing:.1em}.hero-scroll{display:inline-flex;align-items:center;gap:9px;margin-top:28px;color:var(--gold);font-size:9px;letter-spacing:.25em;text-transform:uppercase}.hero-scroll::after{content:"";width:28px;height:1px;background:currentColor}
 
-/* ---- PHASE 2: scroll motion engine (reveal/stagger/parallax) ---- */
-/* hidden-state hanya saat .motion-ready (JS aktif) — no-JS tetap terlihat */
-.motion-ready [data-motion~="reveal"]{
-  opacity:0;transform:translateY(28px);
-  transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1);
-  transition-delay:calc(var(--i,0)*90ms);will-change:opacity,transform}
-.motion-ready [data-motion~="zoom"]{
-  opacity:0;transform:scale(.92);
-  transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1);
-  transition-delay:calc(var(--i,0)*90ms)}
-.motion-ready [data-motion~="parallax"]{will-change:transform}
-[data-motion~="reveal"].in,[data-motion~="zoom"].in{opacity:1;transform:none;transition-delay:var(--i,0)}
+/* Story */
+.story-section{background:linear-gradient(180deg,transparent,rgba(94,65,30,.13),transparent)}
+.timeline{position:relative;display:grid;gap:15px;margin-top:34px;text-align:left}.timeline::before{content:"";position:absolute;top:8px;bottom:8px;left:10px;width:1px;background:linear-gradient(var(--gold),transparent)}
+.tl-item{position:relative;padding:19px 16px 18px 34px;border:1px solid var(--hairline);background:linear-gradient(110deg,rgba(46,33,20,.82),rgba(46,33,20,.36));box-shadow:0 14px 34px -30px #000}.tl-item::before{content:"";position:absolute;top:25px;left:5px;width:11px;height:11px;border:2px solid var(--gold);border-radius:50%;background:var(--bg);box-shadow:0 0 0 4px var(--bg)}.tl-year{color:var(--gold-pale);font-size:10px;font-weight:600;letter-spacing:.2em}.tl-item h3{margin-top:5px;font-size:22px}.tl-item p{margin-top:6px;color:var(--muted);font-size:12px;line-height:1.72}
 
-/* reduced motion */
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
-  .motion-ready [data-motion]{opacity:1!important;transform:none!important;transition-delay:0ms!important}
-  html{scroll-behavior:auto}
-}
+/* Coverflow galeri: dapat digeser horizontal dengan snap, tanpa dependensi eksternal. */
+.gallery-section{max-width:none!important;padding-right:0!important;padding-left:0!important}.gallery-section .section-heading{padding:0 24px}.gallery-flow{display:flex;gap:14px;overflow-x:auto;margin-top:31px;padding:0 calc(50vw - 124px) 28px;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-inline:contain;-webkit-overflow-scrolling:touch}.gallery-flow::-webkit-scrollbar{display:none}.gallery-card{flex:0 0 248px;scroll-snap-align:center;overflow:hidden;border:1px solid var(--border);background:var(--surface);box-shadow:0 20px 38px -30px #000;transform:perspective(900px) rotateY(8deg) scale(.91);transition:transform .46s var(--ease-out),border-color .46s ease,box-shadow .46s ease;will-change:transform}.gallery-card.is-active{border-color:rgba(224,189,74,.8);box-shadow:0 26px 42px -26px #000;transform:perspective(900px) rotateY(0) scale(1)}.gallery-card:nth-child(even){transform:perspective(900px) rotateY(-8deg) scale(.91)}.gallery-card:nth-child(even).is-active{transform:perspective(900px) rotateY(0) scale(1)}.gallery-card figure{margin:0}.gallery-card img{width:100%;aspect-ratio:4/5;object-fit:cover;background:var(--surface2)}.gallery-card figcaption{padding:13px;color:var(--ivory);font-family:var(--font-heading);font-size:21px}.gallery-hint{padding:0 24px;color:var(--muted);font-size:10px;letter-spacing:.16em;text-transform:uppercase}
+
+/* Couple, location, gift */
+.couple-grid{display:grid;gap:18px;margin-top:34px}.couple-card{position:relative;padding:30px 20px;border:1px solid var(--border);background:linear-gradient(145deg,rgba(46,33,20,.94),rgba(46,33,20,.45));overflow:hidden}.couple-card::after{content:"";position:absolute;inset:auto -18px -30px auto;width:100px;height:100px;border:1px solid rgba(201,162,39,.22);border-radius:50%;transform:rotate(45deg)}.couple-card .h3{position:relative;z-index:1;margin-top:9px;font-size:clamp(25px,7vw,31px)}.couple-parent{position:relative;z-index:1;margin-top:8px;color:var(--muted);font-size:12px;line-height:1.7}.location-art{position:relative;margin:26px auto 0;max-width:430px;overflow:hidden;border:1px solid var(--border);box-shadow:0 22px 48px -34px #000}.location-art img{width:100%;aspect-ratio:16/10;object-fit:cover}.venue-name{margin-top:21px;font-family:var(--font-heading);font-weight:600;font-size:25px}.venue-address{margin:7px auto 0;max-width:30ch;color:var(--muted);font-size:12px;line-height:1.7}.maps-btn{display:inline-block;margin-top:18px;padding:12px 19px;border:1px solid var(--gold);color:var(--gold-pale);font-size:9px;letter-spacing:.2em;text-decoration:none;text-transform:uppercase;transition:background .25s ease,color .25s ease}.maps-btn:focus-visible,.maps-btn:hover{background:var(--gold);color:var(--ink)}.gift-card{position:relative;max-width:360px;margin:28px auto 0;padding:32px 24px;border:1px solid var(--border);overflow:hidden;background:linear-gradient(145deg,#382718,var(--surface));box-shadow:0 26px 46px -35px #000}.gift-card::before{content:"";position:absolute;inset:10px;border:1px solid rgba(201,162,39,.16);pointer-events:none}.gift-bank{margin-top:12px;font-family:var(--font-heading);font-size:25px}.gift-holder{margin-top:5px;color:var(--muted);font-size:11px;letter-spacing:.08em}.closing{padding-bottom:calc(100px + env(safe-area-inset-bottom))!important}.closing::after{display:none}
+
+/* Reveal hanya memakai transform/opacity; tidak ada animasi properti layout. */
+.motion-ready [data-motion~="reveal"]{opacity:0;transform:translate3d(0,30px,0);transition:opacity .72s var(--ease-out),transform .72s var(--ease-out);transition-delay:calc(var(--i,0) * 95ms);will-change:transform,opacity}.motion-ready [data-motion~="zoom"]{opacity:0;transform:translate3d(0,18px,0) scale(.92);transition:opacity .82s var(--ease-out),transform .82s var(--ease-out);transition-delay:calc(var(--i,0) * 95ms);will-change:transform,opacity}.motion-ready [data-motion~="reveal"].in,.motion-ready [data-motion~="zoom"].in{opacity:1;transform:translate3d(0,0,0) scale(1)}.motion-ready [data-motion~="parallax"]{will-change:transform}.scene-active .section-kicker{color:var(--gold-pale)}
+
+@media (min-width:680px){section[data-scene]{padding:118px 32px}.couple-grid{grid-template-columns:1fr 1fr}.gallery-flow{padding-left:calc(50vw - 145px);padding-right:calc(50vw - 145px)}.gallery-card{flex-basis:290px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.motion-ready [data-motion]{opacity:1!important;transform:none!important;transition-delay:0ms!important}}
 </style>
 </head>
-<body>
+<body class="opening-locked">
 <div id="world">
-
-  <!-- SCENE 01: OPENING (envelope 3D) -->
-  <div id="opening" data-scene role="dialog" aria-label="Sampul undangan">
-    <p class="kicker">Undangan Pernikahan Adat Jawa</p>
-
-    <div class="env-scene" id="envScene" role="button" tabindex="0" aria-label="Ketuk amplop untuk membuka undangan">
-      <div class="env" id="env">
-        <div class="env-body"></div>
-        <div class="env-card">
-          <p class="ec-names" id="ecNames">—</p>
-          <p class="ec-date" id="ecDate">—</p>
-          <button class="btn-open" id="btnOpen">Buka Undangan</button>
-        </div>
-        <div class="env-flap"></div>
-        <div class="env-seal" aria-hidden="true"></div>
-      </div>
+  <div id="opening" data-scene role="dialog" aria-modal="true" aria-label="Sampul undangan">
+    <div class="batik-field" aria-hidden="true"></div>
+    <div class="opening-content">
+      <p class="kicker">Undangan Pernikahan Adat Jawa</p>
+      <button class="env-scene" id="envScene" type="button" aria-label="Ketuk amplop untuk membuka undangan" aria-expanded="false">
+        <span class="env" id="env" aria-hidden="true">
+          <span class="env-body"></span>
+          <span class="env-card">
+            <span class="ec-names" id="ecNames">—</span>
+            <span class="ec-date" id="ecDate">—</span>
+            <span class="env-action" id="envAction">Buka Undangan</span>
+          </span>
+          <span class="env-flap"></span>
+          <span class="env-seal"></span>
+        </span>
+      </button>
+      <p class="env-hint" id="envHint">Ketuk amplop untuk membuka</p>
+      <p class="guest-line">Kepada Yth. Bapak/Ibu/Saudara/i <span class="guest-name" id="guestName">Tamu Undangan</span></p>
     </div>
-    <p class="env-hint">Ketuk amplop untuk membuka</p>
-
-    <p class="guest-line">Kepada Yth. Bapak/Ibu/Saudara/i
-      <span class="guest-name" id="guestName">Tamu Undangan</span>
-    </p>
   </div>
 
-  <!-- SHELL scene berikutnya (Phase 4) -->
-  <main>
-    <section data-scene aria-label="Hero">
-      <h2 class="h2" id="heroNames" data-motion="reveal">—</h2>
-      <p id="heroDate" data-motion="reveal" style="margin-top:10px;color:var(--muted);font-size:13px">—</p>
+  <main id="invitationContent" tabindex="-1">
+    <section class="scene-hero" data-scene aria-label="Pembuka undangan">
+      <div class="batik-field" aria-hidden="true"></div>
+      <div class="hero-frame" data-motion="zoom">
+        <p class="kicker" data-motion="reveal">The Wedding Of</p>
+        <span class="gold-rule" data-motion="reveal"></span>
+        <h1 class="h1" id="heroNames" data-motion="reveal">—</h1>
+        <p class="hero-date" id="heroDate" data-motion="reveal">—</p>
+        <span class="hero-scroll" data-motion="reveal">Jelajahi undangan</span>
+      </div>
     </section>
-    <section data-scene aria-label="Cerita">
+
+    <section class="story-section" data-scene aria-label="Cerita perjalanan">
+      <p class="kicker section-kicker" data-motion="reveal">Sepenggal Kisah</p>
       <h2 class="h2" data-motion="reveal">Perjalanan Kami</h2>
-      <div id="storyTl" data-motion="stagger" style="margin-top:28px;display:grid;gap:26px;text-align:left"></div>
+      <span class="gold-rule" data-motion="reveal"></span>
+      <div class="timeline" id="storyTl" data-motion="stagger"></div>
     </section>
-    <section data-scene aria-label="Galeri">
-      <h2 class="h2" data-motion="reveal">Galeri</h2>
-      <div class="swiper-wrapper" id="galWrapper" data-motion="stagger"
-        style="margin-top:26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px"></div>
+
+    <section class="gallery-section" data-scene aria-label="Galeri kenangan">
+      <div class="section-heading">
+        <p class="kicker section-kicker" data-motion="reveal">Rangkaian Adat</p>
+        <h2 class="h2" data-motion="reveal">Galeri Kenangan</h2>
+        <span class="gold-rule" data-motion="reveal"></span>
+      </div>
+      <div class="gallery-flow" id="galWrapper" data-motion="reveal" aria-label="Geser untuk melihat galeri"></div>
+      <p class="gallery-hint" data-motion="reveal">Geser untuk melihat rangkaian foto</p>
     </section>
+
     <section data-scene aria-label="Mempelai">
-      <div style="display:grid;gap:24px">
-        <div data-motion="reveal">
+      <p class="kicker section-kicker" data-motion="reveal">Dua Insan</p>
+      <h2 class="h2" data-motion="reveal">Mempelai</h2>
+      <div class="couple-grid">
+        <article class="couple-card" data-motion="reveal">
           <p class="kicker">Mempelai Pria</p>
-          <h3 class="h2" id="groomFull" style="margin-top:8px;font-size:clamp(20px,5.5vw,26px)">—</h3>
-          <p style="margin-top:6px;color:var(--muted);font-size:13px" id="groomParents">—</p>
-        </div>
-        <div data-motion="reveal">
+          <h3 class="h3" id="groomFull">—</h3>
+          <p class="couple-parent" id="groomParents">—</p>
+        </article>
+        <article class="couple-card" data-motion="reveal">
           <p class="kicker">Mempelai Wanita</p>
-          <h3 class="h2" id="brideFull" style="margin-top:8px;font-size:clamp(20px,5.5vw,26px)">—</h3>
-          <p style="margin-top:6px;color:var(--muted);font-size:13px" id="brideParents">—</p>
-        </div>
+          <h3 class="h3" id="brideFull">—</h3>
+          <p class="couple-parent" id="brideParents">—</p>
+        </article>
       </div>
     </section>
-    <section data-scene aria-label="Lokasi">
+
+    <section data-scene aria-label="Lokasi acara">
+      <p class="kicker section-kicker" data-motion="reveal">Akad &amp; Resepsi</p>
       <h2 class="h2" data-motion="reveal">Lokasi Acara</h2>
-      <figure data-motion="parallax" data-speed="0.08" style="margin:22px auto 0;max-width:420px">
-        <img src="assets/img/hero.svg" alt="Pendopo Agung" loading="lazy" style="width:100%;border:1px solid var(--border)">
+      <figure class="location-art" data-motion="parallax" data-speed="0.11">
+        <img src="assets/img/hero.svg" alt="Pendopo Agung" loading="lazy" decoding="async">
       </figure>
-      <h3 id="venueName" data-motion="reveal" style="margin-top:18px;font-family:var(--font-heading);font-weight:500;font-size:20px">—</h3>
-      <p id="venueAddr" data-motion="reveal" style="margin-top:6px;color:var(--muted);font-size:13px">—</p>
-      <a id="mapsBtn" data-motion="reveal" href="#" target="_blank" rel="noopener"
-        style="display:inline-block;margin-top:14px;padding:10px 24px;border:1px solid var(--gold);color:var(--gold);
-        font-size:10px;letter-spacing:.28em;text-transform:uppercase;text-decoration:none">Buka di Google Maps</a>
+      <h3 id="venueName" class="venue-name" data-motion="reveal">—</h3>
+      <p id="venueAddr" class="venue-address" data-motion="reveal">—</p>
+      <a id="mapsBtn" class="maps-btn" data-motion="reveal" href="#" target="_blank" rel="noopener">Buka di Google Maps</a>
     </section>
-    <section data-scene aria-label="Amplop digital">
+
+    <section class="closing" data-scene aria-label="Amplop digital">
+      <p class="kicker section-kicker" data-motion="reveal">Tanda Kasih</p>
       <h2 class="h2" data-motion="reveal">Amplop Digital</h2>
-      <div data-motion="zoom" style="margin:22px auto 0;max-width:340px;padding:24px;border:1px solid var(--border);background:var(--surface)">
+      <div class="gift-card" data-motion="zoom">
         <p class="kicker">Transfer Bank</p>
-        <p id="giftBank" style="margin-top:10px;font-family:var(--font-heading);font-size:18px">—</p>
-        <p id="giftHolder" style="margin-top:4px;color:var(--muted);font-size:12px">—</p>
+        <p class="gift-bank" id="giftBank">—</p>
+        <p class="gift-holder" id="giftHolder">—</p>
       </div>
+      <p class="section-copy" data-motion="reveal">Merupakan suatu kehormatan dan kebahagiaan bagi kami atas kehadiran serta doa restu Anda.</p>
     </section>
   </main>
-
 </div>
 
-<!-- ENGINE modules (urutan penting) -->
 <script src="engine/theme.js"></script>
 <script src="engine/performance.js"></script>
 <script src="engine/parallax.js"></script>
@@ -189,6 +199,7 @@ section[data-scene]{max-width:660px;margin:0 auto;padding:96px 24px;text-align:c
 <script src="engine/scene.js"></script>
 <script src="engine/interaction.js"></script>
 <script src="engine/renderer.js"></script>
+<script src="engine/gallery.js"></script>
 <script src="scenes/opening.js"></script>
 <script src="engine/init.js"></script>
 </body>
