@@ -1,9 +1,12 @@
 import { spawn } from 'node:child_process';
 import { mkdir, rm, writeFile } from 'node:fs/promises';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const browserPort = 9223;
 const chromeProfile = '/tmp/undangan-mobile-check';
 const baseUrl = 'http://127.0.0.1:4173/';
+const artifacts = join(dirname(fileURLToPath(import.meta.url)), 'artifacts');
 const reducedMotion = process.env.REDUCED_MOTION === '1';
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -19,8 +22,8 @@ async function waitForJson(url, attempts = 40) {
 }
 
 await rm(chromeProfile, { recursive: true, force: true });
-await mkdir('/home/ubuntu/undangan-jawa-engine/artifacts', { recursive: true });
-const chrome = spawn('/usr/bin/chromium', [
+await mkdir(artifacts, { recursive: true });
+const chrome = spawn(process.env.CHROME_BIN || '/usr/bin/chromium', [
   '--headless=new', '--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage',
   `--remote-debugging-port=${browserPort}`, `--user-data-dir=${chromeProfile}`, 'about:blank'
 ], { stdio: 'ignore' });
@@ -115,7 +118,7 @@ try {
     reduced: matchMedia('(prefers-reduced-motion: reduce)').matches
   })`));
   const screenshot = await pageCommand('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
-  await writeFile('/home/ubuntu/undangan-jawa-engine/artifacts/mobile-390x844.png', Buffer.from(screenshot.data, 'base64'));
+  await writeFile(join(artifacts, 'mobile-390x844.png'), Buffer.from(screenshot.data, 'base64'));
 
   const pageHeight = await pageEvaluate('document.documentElement.scrollHeight');
   for (let y = 0; y < pageHeight; y += 420) {
@@ -131,7 +134,7 @@ try {
   })`));
 
   const report = { openedState, motionState, consoleErrors };
-  await writeFile('/home/ubuntu/undangan-jawa-engine/artifacts/mobile-390x844-report.json', `${JSON.stringify(report, null, 2)}\n`);
+  await writeFile(join(artifacts, 'mobile-390x844-report.json'), `${JSON.stringify(report, null, 2)}\n`);
   console.log(JSON.stringify(report, null, 2));
 
   if (openedState.viewport[0] !== 390 || openedState.viewport[1] !== 844) throw new Error('Viewport mobile tidak sesuai 390×844');

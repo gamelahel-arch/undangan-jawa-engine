@@ -1,7 +1,6 @@
 /*
-  FlyersEngine — kupu-kupu & burung siluet emas melintasi layar.
-  Pola ambient.js: JS hanya menabur elemen sekali; loop infinite
-  (lintas layar + flap sayap) dijalankan CSS murni via transform.
+  FlyersEngine v2 — restraint: 2 kupu-kupu + 1 burung saja (sebelumnya 5).
+  Pola ambient.js: JS menabur sekali; loop lintas layar + flap dijalankan CSS.
   prefers-reduced-motion: tidak ada DOM yang dibangun.
 */
 const FlyersEngine = {
@@ -12,13 +11,13 @@ const FlyersEngine = {
     layer.id = 'flyersLayer';
     layer.setAttribute('aria-hidden', 'true');
     document.body.appendChild(layer);
-    // 3 kupu-kupu + 2 burung. Delay negatif: fase awal acak, tak serentak.
-    ['butterfly', 'butterfly', 'butterfly', 'bird', 'bird'].forEach((kind, i) => {
+    // Delay negatif: fase awal acak, tak serentak.
+    ['butterfly', 'butterfly', 'bird'].forEach((kind, i) => {
       const el = document.createElement('span');
       el.className = 'flyer ' + kind;
-      el.style.top = (8 + i * 17 + Math.round(Math.random() * 8)) + '%';
+      el.style.top = (10 + i * 24 + Math.round(Math.random() * 8)) + '%';
       el.style.animationDelay = '-' + Math.round(Math.random() * 30) + 's';
-      el.style.setProperty('--fdur', (18 + i * 4) + 's'); // 18–34s
+      el.style.setProperty('--fdur', (22 + i * 6) + 's'); // 22–34s
       el.innerHTML = kind === 'bird' ? this.BIRD : this.FLY;
       layer.appendChild(el);
     });
