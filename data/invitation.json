@@ -25,6 +25,18 @@
     "url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
     "title": "Instrumental Pernikahan"
   },
+  "photos": {
+    "hero": "assets/img/hero.jpg",
+    "groom": "assets/img/groom.jpg",
+    "bride": "assets/img/bride.jpg",
+    "gallery": [
+      "assets/img/g1.jpg",
+      "assets/img/g2.jpg",
+      "assets/img/g3.jpg",
+      "assets/img/g4.jpg"
+    ],
+    "venue": "assets/img/venue.jpg"
+  },
   "story": [
     {
       "year": "2019",

@@ -15,6 +15,21 @@ const Renderer = {
     $('#brideFull').textContent = data.couple.bride.full;
     $('#brideParents').textContent = data.couple.bride.childOf;
 
+    // Photo-scene: pasang foto asli bila field photos terisi;
+    // tanpa itu layout kembali ke ilustrasi SVG lama (fallback).
+    const photos = data.photos || {};
+    Renderer.setPhoto(document.getElementById('groomPhoto'), photos.groom);
+    Renderer.setPhoto(document.getElementById('bridePhoto'), photos.bride);
+    const heroUrl = Renderer.safeUrl(photos.hero);
+    if (heroUrl) document.querySelector('.scene-hero').style.setProperty('--hero-photo', `url("${heroUrl}")`);
+    const venueUrl = Renderer.safeUrl(photos.venue);
+    const locationSection = document.querySelector('.location-section');
+    if (locationSection) {
+      if (venueUrl) locationSection.style.setProperty('--venue-photo', `url("${venueUrl}")`);
+      const art = locationSection.querySelector('.location-art');
+      if (art) art.hidden = Boolean(venueUrl); // tanpa foto venue → tampilkan lagi ilustrasi.
+    }
+
     // Timeline dibuat sebagai node DOM, bukan template HTML, untuk data pengguna tetap aman.
     const timeline = $('#storyTl');
     timeline.replaceChildren();
@@ -41,7 +56,7 @@ const Renderer = {
       card.className = 'gallery-card';
       const figure = document.createElement('figure');
       const image = document.createElement('img');
-      image.src = Renderer.safeUrl(galleryItem.src) || '';
+      image.src = Renderer.safeUrl((photos.gallery && photos.gallery[index]) || galleryItem.src) || '';
       image.alt = galleryItem.caption;
       image.loading = index === 0 ? 'eager' : 'lazy';
       image.decoding = 'async';
@@ -75,5 +90,11 @@ const Renderer = {
     } catch {
       return '';
     }
+  },
+
+  setPhoto(img, value) {
+    if (!img) return;
+    const url = Renderer.safeUrl(value);
+    if (url) { img.src = url; img.hidden = false; }
   }
 };

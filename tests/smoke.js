@@ -11,7 +11,8 @@ function makeNode(tag) {
       toggle(c, f){ if (f === undefined) f = !this._s.has(c); return f ? (this._s.add(c), true) : (this._s.delete(c), false); },
       contains(c){ return this._s.has(c); }
     },
-    children: [], attributes: {}, handlers: {},
+    children: [], attributes: {}, handlers: {}, _q: {},
+    querySelector(s){ return this._q[s] || (this._q[s] = makeNode('div')); },
     querySelectorAll(){ return []; },
     hidden: false, textContent: '', value: '', type: '', className: '', href: '',
     setAttribute(k, v){ this.attributes[k] = String(v); },
@@ -46,7 +47,7 @@ Object.defineProperty(global, 'navigator', { value: { clipboard: { texts: [], wr
 global.localStorage = { _m:{}, getItem(k){ return k in this._m ? this._m[k] : null; }, setItem(k,v){ this._m[k]=String(v); }, removeItem(k){ delete this._m[k]; } };
 global.innerHeight = 800;
 global.innerWidth = 400;
-global.location = { search:'' };
+global.location = { search:'', href:'http://localhost/' };
 global.requestAnimationFrame = cb => setTimeout(cb,16);
 global.cancelAnimationFrame = ()=>{};
 // ok:true agar App.start benar-benar menjalankan renderer + modul.
@@ -79,6 +80,19 @@ for (const f of ['../scenes/opening','theme','performance','parallax','motion','
   assert.ok(data.audio && data.audio.url, 'audio.url harus ada');
   assert.ok(data.rsvp && data.rsvp.enabled && Array.isArray(data.rsvp.seed) && data.rsvp.seed.length >= 2, 'rsvp enabled + seed');
   assert.ok(Array.isArray(data.gift.rekening) && data.gift.rekening.length >= 1, 'gift.rekening array');
+
+  // Photo-scene: semua foto self-hosted ada di disk (JPEG >20KB) dan terpasang renderer.
+  const photoPaths = [data.photos.hero, data.photos.groom, data.photos.bride, ...data.photos.gallery, data.photos.venue];
+  for (const p of photoPaths) {
+    const bytes = fs.readFileSync(p);
+    assert.ok(bytes.length > 20480, `${p} harus >20KB (dapat ${bytes.length}B)`);
+    assert.ok(bytes[0] === 0xFF && bytes[1] === 0xD8, `${p} harus JPEG`);
+  }
+  assert.ok(byId.groomPhoto.src.endsWith('/assets/img/groom.jpg') && byId.groomPhoto.hidden === false, 'foto groom terpasang');
+  assert.ok(byId.bridePhoto.src.endsWith('/assets/img/bride.jpg'), 'foto bride terpasang');
+  const galImgs = document.querySelector('#galWrapper').children.map(c => c.children[0].children[0].src);
+  assert.strictEqual(galImgs.length, data.photos.gallery.length, 'galeri = jumlah foto');
+  assert.ok(galImgs.every((s, i) => s.endsWith(data.photos.gallery[i])), 'galeri pakai foto asli');
 
   // Countdown mengisi angka untuk tanggal masa depan.
   assert.ok(byId.cdD.textContent !== '00' || byId.cdS.textContent !== '00', 'countdown harus terisi');
