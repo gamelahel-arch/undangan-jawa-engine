@@ -12,6 +12,7 @@ const OpeningScene = {
     const open = () => {
       if (this.opened) return;
       this.opened = true;
+      document.dispatchEvent(new CustomEvent('invitation:opened'));
       trigger.disabled = true;
       trigger.setAttribute('aria-expanded', 'true');
       trigger.setAttribute('aria-label', 'Undangan sedang dibuka');

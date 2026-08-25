@@ -15,6 +15,7 @@ const App = {
 
     // Data selalu dirender sebelum modul mencari elemen dinamis.
     Renderer.run(data);
+    CommerceEngine.init(data);
     ParallaxManager.intensity = config.parallax;
     ParallaxManager.init();
     Camera.bind(document.getElementById('world'));

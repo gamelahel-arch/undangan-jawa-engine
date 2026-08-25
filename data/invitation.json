@@ -21,6 +21,10 @@
     "address": "Jl. Rotowijayan Blok No. 1, Yogyakarta",
     "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Pendopo+Agung+Keraton+Yogyakarta"
   },
+  "audio": {
+    "url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+    "title": "Instrumental Pernikahan"
+  },
   "story": [
     {
       "year": "2019",
@@ -64,6 +68,33 @@
   "gift": {
     "bank": "BCA",
     "account": "1234567890",
-    "holder": "RARA LARASATI NINGRUM"
+    "holder": "RARA LARASATI NINGRUM",
+    "rekening": [
+      { "bank": "BCA", "account": "1234567890", "holder": "RARA LARASATI NINGRUM" },
+      { "bank": "Mandiri", "account": "9876543210", "holder": "ARGA WIJAYA" }
+    ]
+  },
+  "rsvp": {
+    "enabled": true,
+    "seed": [
+      {
+        "name": "Budi Santoso",
+        "attend": "Hadir",
+        "message": "Selamat menempuh hidup baru, Arga & Larasati! Samawa selalu.",
+        "ts": "2026-08-01T09:00:00+07:00"
+      },
+      {
+        "name": "Siti Rahayu",
+        "attend": "Masih Ragu",
+        "message": "Semoga lancar sampai hari H, insya Allah hadir.",
+        "ts": "2026-08-02T14:30:00+07:00"
+      },
+      {
+        "name": "Keluarga Besar Hartono",
+        "attend": "Hadir",
+        "message": "Turut berbahagia, semoga menjadi keluarga yang sakinah mawaddah warahmah.",
+        "ts": "2026-08-03T19:45:00+07:00"
+      }
+    ]
   }
 }

@@ -145,8 +145,37 @@ section[data-scene]::before{content:"";position:absolute;left:50%;bottom:-4px;z-
 @keyframes cardFloat{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-4px,0)}}
 .motion-ready .hero-frame.in,.motion-ready .tl-item.in,.motion-ready .couple-card.in,.motion-ready .gift-card.in{animation:cardFloat var(--fdur,7s) ease-in-out infinite;animation-delay:calc(1s + var(--i,0)*95ms)}
 .tl-item:nth-child(2n),.couple-grid .couple-card:nth-child(2){--fdur:8.2s}
+/* ====== COMMERCE: musik, countdown, salin rekening, RSVP ====== */
+.music-btn{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:120;width:46px;height:46px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--border);background:linear-gradient(155deg,rgba(46,33,20,.92),rgba(28,19,13,.88));color:var(--gold-pale);box-shadow:0 14px 30px -12px rgba(0,0,0,.75);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.music-btn:focus-visible{outline:1px solid var(--gold-pale);outline-offset:3px}
+.music-btn.playing{border-color:rgba(212,185,120,.75);box-shadow:0 0 18px rgba(201,168,76,.35),0 14px 30px -12px rgba(0,0,0,.75)}
+.music-btn.playing svg{animation:discSpin 3.4s linear infinite}
+@keyframes discSpin{to{transform:rotate(360deg)}}
+.cd-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:30px}
+.cd-box{padding:18px 6px;border:1px solid rgba(201,168,76,.26);background:linear-gradient(150deg,rgba(70,49,26,.85),rgba(28,19,13,.65));box-shadow:0 20px 40px -34px #000}
+.cd-num{display:block;font-family:var(--font-heading);font-weight:600;font-size:clamp(27px,7vw,38px);line-height:1;color:var(--ivory)}
+.cd-lbl{display:block;margin-top:7px;font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.cd-done{margin-top:26px;font-family:var(--font-heading);font-weight:600;font-size:clamp(27px,7vw,36px);color:var(--gold-pale)}
+.copy-btn{margin-top:18px;padding:11px 17px;border:1px solid var(--gold);background:transparent;color:var(--gold-pale);font-size:9px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:background .25s ease,color .25s ease}
+.copy-btn+.copy-btn{margin-left:8px}
+.copy-btn:hover,.copy-btn:focus-visible{background:var(--gold);color:var(--ink)}
+.copy-btn.copied{border-color:var(--gold-pale);background:rgba(201,168,76,.12);color:var(--gold-pale)}
+.rsvp-form{display:grid;gap:11px;margin:32px auto 0;max-width:400px;text-align:left}
+.rsvp-form input,.rsvp-form select,.rsvp-form textarea{width:100%;padding:13px 15px;border:1px solid rgba(201,168,76,.3);background:rgba(28,19,13,.6);color:var(--fg);font-family:inherit;font-size:13px}
+.rsvp-form ::placeholder{color:var(--muted)}
+.rsvp-form textarea{resize:vertical;min-height:74px}
+.rsvp-submit{margin-top:4px;padding:13px;border:1px solid var(--gold);background:transparent;color:var(--gold-pale);font-size:9px;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;transition:background .25s ease,color .25s ease}
+.rsvp-submit:hover,.rsvp-submit:focus-visible{background:var(--gold);color:var(--ink)}
+.rsvp-list{display:grid;gap:11px;align-content:start;margin:26px auto 0;max-width:400px;max-height:330px;overflow-y:auto;padding:2px;text-align:left;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.rsvp-item{padding:15px 17px;border:1px solid rgba(201,168,76,.2);background:linear-gradient(110deg,rgba(46,33,20,.9),rgba(24,16,10,.55))}
+.rsvp-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px;justify-content:space-between}
+.rsvp-name{font-weight:600;font-size:13px}
+.rsvp-badge{padding:3px 8px;border:1px solid var(--border);color:var(--muted);font-size:8px;letter-spacing:.14em;text-transform:uppercase}
+.rsvp-badge.yes{border-color:rgba(201,168,76,.45);color:#d8c07a}
+.rsvp-item p{margin-top:7px;color:var(--muted);font-size:12px;line-height:1.7;overflow-wrap:anywhere}
+.rsvp-empty{color:var(--muted);font-style:italic;font-size:12px;padding:6px}
 
-@media (min-width:680px){section[data-scene]{min-height:auto;padding:140px 36px}.couple-grid{grid-template-columns:1fr 1fr}.gallery-flow{padding-left:calc(50vw - 145px);padding-right:calc(50vw - 145px)}.gallery-card{flex-basis:290px}}
+@media (min-width:680px){section[data-scene]{min-height:auto;padding:140px 36px}.couple-grid{grid-template-columns:1fr 1fr}.gallery-flow{padding-left:calc(50vw - 145px);padding-right:calc(50vw - 145px)}.gallery-card{flex-basis:290px}.cd-grid{gap:14px}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.motion-ready [data-motion]{opacity:1!important;transform:none!important;transition-delay:0ms!important}#ambientLayer,.hang-row,.ampel{display:none}}
 </style>
 </head>
@@ -192,6 +221,20 @@ section[data-scene]::before{content:"";position:absolute;left:50%;bottom:-4px;z-
         <p class="hero-date" id="heroDate" data-motion="reveal">—</p>
         <span class="hero-scroll" data-motion="reveal">Jelajahi undangan</span>
       </div>
+    </section>
+
+    <section id="countdownSection" data-scene aria-label="Hitung mundur menuju hari bahagia">
+      <span class="deco-glow" data-motion="parallax" data-speed="0.06" aria-hidden="true"></span>
+      <p class="kicker section-kicker" data-motion="reveal">Save The Date</p>
+      <h2 class="h2" data-motion="reveal">Menuju Hari Bahagia</h2>
+      <span class="gold-rule" data-motion="reveal"></span>
+      <div class="cd-grid" id="cdGrid" data-motion="reveal" role="timer" aria-label="Hitung mundur pernikahan">
+        <div class="cd-box"><span class="cd-num" id="cdD">00</span><span class="cd-lbl">Hari</span></div>
+        <div class="cd-box"><span class="cd-num" id="cdH">00</span><span class="cd-lbl">Jam</span></div>
+        <div class="cd-box"><span class="cd-num" id="cdM">00</span><span class="cd-lbl">Menit</span></div>
+        <div class="cd-box"><span class="cd-num" id="cdS">00</span><span class="cd-lbl">Detik</span></div>
+      </div>
+      <p class="cd-done" id="cdDone" hidden>Hari Bahagia Telah Tiba ✦</p>
     </section>
 
     <section class="story-section" data-scene aria-label="Cerita perjalanan">
@@ -250,11 +293,39 @@ section[data-scene]::before{content:"";position:absolute;left:50%;bottom:-4px;z-
         <p class="kicker">Transfer Bank</p>
         <p class="gift-bank" id="giftBank">—</p>
         <p class="gift-holder" id="giftHolder">—</p>
+        <div id="giftAccounts"></div>
       </div>
       <p class="section-copy" data-motion="reveal">Merupakan suatu kehormatan dan kebahagiaan bagi kami atas kehadiran serta doa restu Anda.</p>
     </section>
+
+    <section id="rsvpSection" data-scene aria-label="Konfirmasi kehadiran dan ucapan">
+      <span class="deco-ring" data-motion="parallax" data-speed="0.07" aria-hidden="true"></span>
+      <p class="kicker section-kicker" data-motion="reveal">Konfirmasi &amp; Doa</p>
+      <h2 class="h2" data-motion="reveal">RSVP &amp; Ucapan</h2>
+      <span class="gold-rule" data-motion="reveal"></span>
+      <form id="rsvpForm" class="rsvp-form" data-motion="reveal">
+        <input id="rsvpName" type="text" maxlength="60" placeholder="Nama Anda" aria-label="Nama Anda" autocomplete="name">
+        <select id="rsvpAttend" aria-label="Konfirmasi kehadiran">
+          <option value="Hadir">Hadir</option>
+          <option value="Tidak Hadir">Tidak Hadir</option>
+          <option value="Masih Ragu">Masih Ragu</option>
+        </select>
+        <textarea id="rsvpMsg" maxlength="300" rows="3" placeholder="Kirim ucapan &amp; doa…" aria-label="Ucapan dan doa"></textarea>
+        <button type="submit" class="rsvp-submit">Kirim Ucapan</button>
+      </form>
+      <div id="rsvpList" class="rsvp-list" data-motion="reveal" aria-live="polite" aria-label="Ucapan tamu"></div>
+    </section>
   </main>
 </div>
+
+<button id="musicBtn" class="music-btn" type="button" hidden aria-label="Putar musik latar" aria-pressed="false">
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+    <circle cx="12" cy="12" r="8.6"/>
+    <circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/>
+    <path d="M12 7.4a4.6 4.6 0 0 1 4.6 4.6M12 4.9a7.1 7.1 0 0 1 7.1 7.1"/>
+  </svg>
+</button>
+<audio id="bgm" loop preload="auto"></audio>
 
 <script src="engine/theme.js"></script>
 <script src="engine/performance.js"></script>
@@ -266,6 +337,7 @@ section[data-scene]::before{content:"";position:absolute;left:50%;bottom:-4px;z-
 <script src="engine/scene.js"></script>
 <script src="engine/interaction.js"></script>
 <script src="engine/renderer.js"></script>
+<script src="engine/commerce.js"></script>
 <script src="engine/gallery.js"></script>
 <script src="scenes/opening.js"></script>
 <script src="engine/init.js"></script>
